@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sv_score"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_score_person"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:text="@string/dormitory_culture"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/sleep" />
+
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_sleep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="4"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="4" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/play_game" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_play_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="4"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="4" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/cooperate" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_cooperate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="4"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="4" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/wear" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_wear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="4"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="4" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/help" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="4"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="4" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:text="张贴宿舍相关规定(10分)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/hava_regular" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_hava_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="10"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="10" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:text="地面床下整洁程度(20分)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/floor_clean"
+                android:textSize="@dimen/score_text_size" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_floor_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="10"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/underbed_clean" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_underbed_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="10"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="10" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:layout_marginRight="@dimen/score_margin_title"
+            android:text="床铺铺设美观，床上物品摆放整齐(10分)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/bed_neat" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_bed_neat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/quilt_neat" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_quilt_neat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:text="门窗玻璃墙壁洁净(10分)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/doorwindow_clean" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_doorwindow_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/wall_clean" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_wall_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:layout_marginRight="@dimen/score_margin_title"
+            android:text="家具,电器等物品摆放整齐,美观(10分)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/computer_clean" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_computer_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/table_clean" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_table_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:text="无乱搭,乱拉,乱挂现象(10分)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/no_construct" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_construct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/radiator_nowaste" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_radiator_nowaste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:text="阳台整洁(10分)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/balcony_neat" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_balcony_neat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/balcony_clean" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_balcony_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="5"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="5" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:text="加分项(10分)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/room_beautiful" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_room_beautiful"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:np_width="126dp"
+                app:np_height="45dp"
+                app:np_orientation="horizontal"
+                app:np_dividerColor="@color/colorPrimary"
+                app:np_formatter="@string/number_picker_formatter"
+                app:np_max="10"
+                app:np_min="0"
+                app:np_selectedTextColor="@color/colorPrimary"
+                app:np_selectedTextSize="20dp"
+                app:np_textColor="@color/colorPrimary"
+                app:np_textSize="15dp"
+                app:np_typeface="@string/roboto_light"
+                app:np_value="0" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/score_margin_title"
+            android:layout_marginRight="@dimen/score_margin_title"
+            android:text="减分项(-20分)有下列情形之一视为宿舍存在安全隐患"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/room_smook" />
+
+            <CheckBox
+                android:id="@+id/cb_room_smook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/room_power" />
+
+            <CheckBox
+                android:id="@+id/cb_room_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/person_power" />
+
+            <CheckBox
+                android:id="@+id/cb_person_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/hava_pet" />
+
+            <CheckBox
+                android:id="@+id/cb_hava_pet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/score_margin_check"
+            android:layout_marginRight="@dimen/score_margin_check"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/score_text_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/use_ban_electrical" />
+
+            <CheckBox
+                android:id="@+id/cb_use_ban_electrical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_up_score"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/btn_style_alert_dialog_special"
+            android:text="@string/up_score"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,142 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_floating_material_light">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="104dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/background_floating_material_light" />
+
+                <cn.hicc.suguan.dormitory.view.CircleImageView
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="48dp"
+                    android:src="@drawable/hicc_logo"
+                    app:border_color="@color/background_floating_material_light"
+                    app:border_width="4dp" />
+
+                <cn.hicc.suguan.dormitory.view.ShimmerFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="bottom"
+                    app:auto_start="true"
+                    app:duration="2000">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="宿 舍 管 理"
+                        android:textColor="#444"
+                        android:textSize="30dp" />
+
+
+                </cn.hicc.suguan.dormitory.view.ShimmerFrameLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="v 1.2"
+                android:textColor="#7a7575"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_input_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:hint="用户名"
+                        android:inputType="textAutoComplete"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@drawable/edittext_cursor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:hint="密码"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@drawable/edittext_cursor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/cb_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="记住密码" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/bt_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:backgroundTint="@color/md_light_blue_400"
+                    android:paddingBottom="20dp"
+                    android:paddingTop="20dp"
+                    android:text="登   录"
+                    android:textColor="@color/md_white_1000"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Copyright © 2005 - 2017 网络中心. All Rights Reserved. "
+                android:textSize="10sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+
+
+

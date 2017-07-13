@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#02A8F3</color>
+    <color name="colorPrimaryDark">#0099de</color>
+    <color name="colorAccent">#019689</color>
+
+
+    <color name="window_background">#FFF5F5F5</color>
+    <color name="tabTextColor">#FFFFFF</color>
+    <color name="tabSelectedTextColor">#000000</color>
+    <color name="tabIndicatorColor">#8a2be2</color>
+    <color name="btn_orange_pressd">#DE8A14</color>
+    <color name="btn_orange_normal">#EB9316</color>
+    <color name="btn_upscore_normal">#d33f3f</color>
+    <color name="btn_upscore_pressed">#DA5A4D</color>
 </resources>

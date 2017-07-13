@@ -1,3 +1,61 @@
 <resources>
-    <string name="app_name">Dormitory</string>
+    <string name="app_name">宿舍管理</string>
+
+
+    <string name="action_quit">退出</string>
+    <string name="action_about">关于我们</string>
+    <string name="all_check">全选/取消</string>
+
+    <string name="one">一楼</string>
+    <string name="two">二楼</string>
+    <string name="three">三楼</string>
+    <string name="four">四楼</string>
+    <string name="five">五楼</string>
+    <string name="six">六楼</string>
+
+    <string name="pull_to_refresh">下拉可以刷新</string>
+    <string name="release_to_refresh">释放立即刷新</string>
+    <string name="refreshing">正在刷新…</string>
+    <string name="not_updated_yet">暂未更新过</string>
+    <string name="updated_at">上次更新于%1$s前</string>
+    <string name="updated_just_now">刚刚更新</string>
+    <string name="time_error">时间有问题</string>
+
+    <string name="wear">着装文明得体(4分)</string>
+    <string name="dormitory_culture">宿舍精神文明(20分)</string>
+    <string name="sleep">无睡懒觉现象(4分)</string>
+    <string name="play_game">无玩游戏现象(4分)</string>
+    <string name="cooperate">配合现象(4分)</string>
+    <string name="help">关系融洽,互助互爱(4分)</string>
+    <string name="floor_clean">地面洁净,无垃圾杂物(10分)</string>
+    <string name="underbed_clean">床下洁净,物品摆放整齐(10分)</string>
+    <string name="quilt_neat">被子叠放整齐(5分)</string>
+    <string name="bed_neat">床上物品摆放整齐(5分)</string>
+    <string name="doorwindow_clean">门窗洁净(5分)</string>
+    <string name="wall_clean">墙壁洁净,无蜘蛛网(5分)</string>
+    <string name="table_clean">桌椅,书架干净,书籍等物品摆放整齐(5分)</string>
+    <string name="computer_clean">桌椅,电脑等摆放整齐(5分)</string>
+    <string name="no_construct">无乱搭,乱挂杂物(5分)</string>
+    <string name="radiator_nowaste">暖气片周围无杂物(5分)</string>
+    <string name="balcony_neat">阳台物品摆放整齐,无杂物(5分)</string>
+    <string name="balcony_clean">阳台地面干净,无垃圾(5分)</string>
+    <string name="hava_regular">张贴宿舍相关规定(10分)</string>
+    <string name="room_beautiful">室内装饰整体美观,风格统一(10分)</string>
+
+    <string name="room_smook">1.宿舍内吸烟,乱扔烟头</string>
+    <string name="room_power">2.宿舍无人时,电源插座没有关闭</string>
+    <string name="use_ban_electrical">5.存放或使用热得快,电水壶,电热杯,电热毯等违章电器</string>
+    <string name="hava_pet">4.饲养宠物</string>
+    <string name="person_power">3.私拉电源线(包括电源插座放置在床铺或捆绑在床上等)</string>
+    <string name="up_score">提交</string>
+
+
+    <string name="roboto_regular">sans-serif</string>
+    <string name="roboto_light">sans-serif-light</string>
+    <string name="roboto_condensed">sans-serif-condensed</string>
+    <string name="roboto_thin">sans-serif-thin</string>
+    <string name="roboto_medium">sans-serif-medium</string>
+
+    <string name="number_picker_formatter">%02d</string>
+
 </resources>
