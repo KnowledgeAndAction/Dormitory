@@ -82,26 +82,6 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
     private int w = 0;
     private int x = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // 20.减分项(-20分) 1.宿舍内吸烟，乱扔烟头 变量t
     private CheckBox cb_room_smook;
     // 21.减分项(-20分) 2.宿舍无人时，电源插座没有关闭 变量u
@@ -186,9 +166,9 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_score);
 
-        initView();
-
         getActivityIntent();
+
+        initView();
 
         initData();
     }
@@ -207,6 +187,7 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         Intent intent = getIntent();
         build_code = intent.getIntExtra("buildCode", 0);
         build_num = intent.getIntExtra("buildNum", 0);
+        Logs.d("build_code:"+build_code +",build_num:"+ build_num );
     }
 
     @Override

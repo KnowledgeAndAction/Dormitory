@@ -219,6 +219,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("weekCode", 0);
 
+                                ToastUtil.showShort("登录成功");
                                 startActivity(intent);
                                 finish();
                             } else {

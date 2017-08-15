@@ -3,7 +3,7 @@ package cn.hicc.suguan.dormitory.utils;
 
 public class URL {
     /**
-     * 登录接口地址
+     * 接口地址
      */
     public static final String LOGIN_URL = "http://123.206.57.216:8080/login/login.do";
     public static final String Get_User_Build="http://suguan.hicc.cn/CheckServlet";

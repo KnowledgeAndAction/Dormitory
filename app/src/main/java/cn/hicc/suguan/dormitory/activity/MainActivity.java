@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
                             progressBar.setProgress((int) progress);
                             tv_main_jd.setText(count + "/" + array.length() + "");
                         } catch (JSONException e) {
+                            Logs.d(e.toString());
                             e.printStackTrace();
                         }
                     }
@@ -372,7 +373,6 @@ public class MainActivity extends AppCompatActivity {
                                 ToastUtil.showShort("上传失败");
                             }
                         });
-                        Toast.makeText(MainActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                     } else if (code == 1) {
                         runOnUiThread(new Runnable() {
                             @Override
