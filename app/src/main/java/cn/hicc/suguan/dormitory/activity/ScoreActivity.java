@@ -242,8 +242,8 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         OkHttpUtils
                 .post()
                 .url(URL.Get_User_Name)
-                .addParams("dormitoryNo", build_num + "")
-                .addParams("dormitoryBuildingCode", build_code + "")
+                .addParams("DorBuiCode", build_code + "")
+                .addParams("DorBedNum", build_num + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -259,7 +259,8 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
                             Logs.i(response);
                             JSONArray array = new JSONArray(response);
                             for (int i = 0; i < array.length(); i++) {
-                                JSONObject object = array.getJSONObject(i);
+                                JSONObject ob = array.getJSONObject(i);
+                                JSONObject object = ob.getJSONObject("data");
                                 mlist.add(new HostelPerson(object.getString("studentName"), object.getInt("bedNumber")));
                                 adapter.notifyDataSetChanged();
                             }
@@ -285,14 +286,14 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scorestr = a + "" + b + "" + c + "" + d + "" + e + "" + f + "" + g + "" + h + "" + i + "" + j + ""
-                        + k + "" + l + "" + m + "" + n + "" + o + "" + p + "" + q + ""
-                        + r + "" + s + "" + t + "" + u + "" + v + "" + w + "" + x + "";
+                scorestr = a + " " + b + " " + c + " " + d + " " + e + " " + f + " " + g + " " + h + " " + i + " " + j + " "
+                        + k + " " + l + " " + m + " " + n + " " + o + " " + p + " " + q + " "
+                        + r + " " + s + " " + t + " " + u + " " + v + " " + w + " " + x;
 
                 GetScore();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
-                builder.setMessage("你当前提交的信息:" + TextUtils.GetBuildName(build_code) + build_num + "------" + "分数:"
+                builder.setMessage("你当前提交的信息:\n" + TextUtils.GetBuildName(build_code) + build_num + "----" + "分数:"
                         + score + "分");
                 builder.setTitle("提示");
                 builder.setCancelable(false);
@@ -332,6 +333,7 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        Logs.e(e.toString());
                         ToastUtil.showShort("上传失败，请检查网络");
                     }
 

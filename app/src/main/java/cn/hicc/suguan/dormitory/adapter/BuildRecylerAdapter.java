@@ -59,6 +59,16 @@ public class BuildRecylerAdapter extends RecyclerView.Adapter<BuildRecylerAdapte
         }
     }
 
+    public void setItems(List<Hostel> newItems) {
+        int preSize = this.mlist.size();
+        if(preSize > 0) {
+            this.mlist.clear();
+            notifyItemRangeRemoved(0, preSize);
+        }
+        this.mlist.addAll(newItems);
+        notifyItemRangeChanged(0, newItems.size());
+    }
+
     @Override
     public int getItemCount() {
         return mlist == null ? 0 : mlist.size();

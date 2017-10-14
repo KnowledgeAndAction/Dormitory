@@ -180,12 +180,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void getUserBuild() {
         count = 0;
-        mlist.clear();
+        //mlist.clear();
         OkHttpUtils
                 .post()
                 .url(URL.Get_User_Build)
-                .addParams("num", SpUtil.getString(Constant.USERNAME))
-                .addParams("date", Utils.GetTime())
+                .addParams("user", SpUtil.getString(Constant.USERNAME))
+                //.addParams("date", Utils.GetTime())
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
+                        Logs.d(response);
                         swipeRefresh.setRefreshing(false);
                         try {
                             Cursor c = db.query(SQLITE.TABLE_HELPER_CHECK, null, null, null, null, null, null);
@@ -205,11 +206,13 @@ public class MainActivity extends AppCompatActivity {
                             }
                             c.close();
                             JSONArray array = new JSONArray(response);
+                            List<Hostel> list = new ArrayList<Hostel>();
                             for (int i = 0; i < array.length(); i++) {
-                                JSONObject ob = array.getJSONObject(i);
-                                int Building = ob.getInt("dormitoryBuildingCode");
+                                JSONObject obs = array.getJSONObject(i);
+                                JSONObject ob = obs.getJSONObject("data");
+                                int Building = Integer.valueOf(ob.getString("dormitoryBuildingCode"));
                                 String DormitoryState = ob.getString("dormitoryState");
-                                int totalScore = ob.getInt("totalScore");
+                                //int totalScore = ob.getInt("totalScore");
                                 int Hostel = ob.getInt("dormitoryId");
                                 int checkType = ob.getInt("checkType");
                                 ContentValues cv = new ContentValues();
@@ -218,13 +221,15 @@ public class MainActivity extends AppCompatActivity {
                                 cv.put("DormitoryState", DormitoryState);
                                 db.insert(SQLITE.TABLE_HELPER_CHECK, null, cv);
                                 if (DormitoryState.equals("0")) {
-                                    mlist.add(new Hostel(Building, Hostel, totalScore, false, i + 1, checkType, weekCode));
+                                    list.add(new Hostel(Building, Hostel, 0, false, i + 1, checkType, weekCode));
                                 } else {
                                     count++;
-                                    mlist.add(new Hostel(Building, Hostel, totalScore, true, i + 1, checkType, weekCode));
+                                    list.add(new Hostel(Building, Hostel, 0, true, i + 1, checkType, weekCode));
                                 }
                             }
-                            adapter.notifyDataSetChanged();
+                            //adapter.notifyDataSetChanged();
+                            adapter.setItems(list);
+
                             double progress = (double) count / (double) array.length() * 100;
                             progressBar.setProgress((int) progress);
                             tv_main_jd.setText(count + "/" + array.length() + "");
@@ -273,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new BuildRecylerAdapter(mlist);
         // 为mRecyclerView设置适配
         mRecyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
 
         adapter.setOnItemClickListener(new BuildRecylerAdapter.OnRecyclerViewItemClickListener() {
             @Override
@@ -442,7 +447,7 @@ public class MainActivity extends AppCompatActivity {
     private void getAppInfoJson(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            boolean falg = jsonObject.getBoolean("falg");
+            boolean falg = jsonObject.getBoolean("flag");
             if (falg) {
                 JSONObject data = jsonObject.getJSONObject("data");
                 double v = Double.valueOf(data.getString("appVersion"));

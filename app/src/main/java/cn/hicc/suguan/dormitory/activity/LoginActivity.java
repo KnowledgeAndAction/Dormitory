@@ -192,8 +192,8 @@ public class LoginActivity extends AppCompatActivity {
         OkHttpUtils
                 .get()
                 .url(URL.LOGIN_URL)
-                .addParams("number", username)
-                .addParams("pass", password)
+                .addParams("userName", username)
+                .addParams("userPassword", password)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -217,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SpUtil.putString(Constant.ASSISTANT_NAME, name);
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra("weekCode", 0);
+                                intent.putExtra("weekCode", data.getInt("weekCode"));
 
                                 ToastUtil.showShort("登录成功");
                                 startActivity(intent);
