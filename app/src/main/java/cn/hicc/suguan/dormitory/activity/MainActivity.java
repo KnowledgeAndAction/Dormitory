@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -86,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
     private MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
     private static Boolean isExit = false;
     private ProgressDialog progressDialog;
+    private FloatingActionButton fab;
+    private int mCheckType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         tv_main_jd = (TextView) findViewById(R.id.tv_main_jd);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_main_list);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         tv_main_name.setText(SpUtil.getString(Constant.ASSISTANT_NAME) + " 你好!");
         tv_main_time.setText(Utils.GetShortDate());
@@ -134,6 +141,16 @@ public class MainActivity extends AppCompatActivity {
 
         // 设置RecyclerView
         InitBuildRecycler();
+
+        // 设置FAB点击事件
+        fab.setRippleColor(getResources().getColor(R.color.colorPrimaryDark));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 弹出选择检查类型对话框
+                showChooseDialog();
+            }
+        });
 
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         // 配置swipeRefresh
@@ -150,9 +167,37 @@ public class MainActivity extends AppCompatActivity {
         swipeRefresh.setRefreshing(true);
     }
 
+    // 选择检查类型
+    private void showChooseDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setSingleChoiceItems(new String[]{"普查","抽查"}, mCheckType-1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mCheckType = which+1;
+            }
+        });
+        builder.setTitle("选择查宿类型");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 重新获取数据
+                swipeRefresh.setRefreshing(true);
+                getUserBuild();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
     private void getActivityIntent() {
         Intent intent = getIntent();
         weekCode = intent.getIntExtra("weekCode", 0);
+        mCheckType = intent.getIntExtra("type", 0);
     }
 
     @Override
@@ -182,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         count = 0;
         //mlist.clear();
         OkHttpUtils
-                .post()
+                .get()
                 .url(URL.Get_User_Build)
                 .addParams("user", SpUtil.getString(Constant.USERNAME))
                 //.addParams("date", Utils.GetTime())
@@ -190,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        showFalseData();
+                        //showFalseData();
                         swipeRefresh.setRefreshing(false);
                         ToastUtil.showShort("获取信息失败，请稍后重试");
                     }
@@ -206,33 +251,36 @@ public class MainActivity extends AppCompatActivity {
                             }
                             c.close();
                             JSONArray array = new JSONArray(response);
-                            List<Hostel> list = new ArrayList<Hostel>();
+                            List<Hostel> list = new ArrayList<>();
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject obs = array.getJSONObject(i);
                                 JSONObject ob = obs.getJSONObject("data");
                                 int Building = Integer.valueOf(ob.getString("dormitoryBuildingCode"));
                                 String DormitoryState = ob.getString("dormitoryState");
-                                //int totalScore = ob.getInt("totalScore");
+                                int totalScore = ob.getInt("totalScore");
                                 int Hostel = ob.getInt("dormitoryId");
                                 int checkType = ob.getInt("checkType");
-                                ContentValues cv = new ContentValues();
-                                cv.put("Building", TextUtils.GetBuildName(Building));
-                                cv.put("Hostel", Hostel);
-                                cv.put("DormitoryState", DormitoryState);
-                                db.insert(SQLITE.TABLE_HELPER_CHECK, null, cv);
-                                if (DormitoryState.equals("0")) {
-                                    list.add(new Hostel(Building, Hostel, 0, false, i + 1, checkType, weekCode));
-                                } else {
-                                    count++;
-                                    list.add(new Hostel(Building, Hostel, 0, true, i + 1, checkType, weekCode));
+
+                                if (checkType == mCheckType) {
+                                    ContentValues cv = new ContentValues();
+                                    cv.put("Building", TextUtils.GetBuildName(Building));
+                                    cv.put("Hostel", Hostel);
+                                    cv.put("DormitoryState", DormitoryState);
+                                    db.insert(SQLITE.TABLE_HELPER_CHECK, null, cv);
+                                    if (DormitoryState.equals("0")) {
+                                        list.add(new Hostel(Building, Hostel, totalScore, false, i + 1, checkType, weekCode));
+                                    } else {
+                                        count++;
+                                        list.add(new Hostel(Building, Hostel, totalScore, true, i + 1, checkType, weekCode));
+                                    }
                                 }
                             }
                             //adapter.notifyDataSetChanged();
                             adapter.setItems(list);
 
-                            double progress = (double) count / (double) array.length() * 100;
+                            double progress = (double) count / (double) list.size() * 100;
                             progressBar.setProgress((int) progress);
-                            tv_main_jd.setText(count + "/" + array.length() + "");
+                            tv_main_jd.setText(count + "/" + list.size() + "");
                         } catch (JSONException e) {
                             Logs.d(e.toString());
                             e.printStackTrace();
@@ -241,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    // 测试用的假数据
     private void showFalseData() {
         for (int i=0; i<15; i++) {
             int Building = i;
@@ -280,6 +329,20 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
 
+        // 设置recycleview滑动监听事件
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                // 隐藏或者显示fab
+                if (dy > 0) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+            }
+        });
+
         adapter.setOnItemClickListener(new BuildRecylerAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position, List<Hostel> mlist) {
@@ -292,8 +355,10 @@ public class MainActivity extends AppCompatActivity {
                     intent.setClass(MainActivity.this, ScoreActivity.class);
                     int buildCode = hostel.getBuilding();
                     int buildNum = hostel.getHostel();
+                    int checkType = hostel.getCheckType();
                     intent.putExtra("buildCode", buildCode);
                     intent.putExtra("buildNum", buildNum);
+                    intent.putExtra("checkType", checkType);
                     startActivity(intent);
                 }
             }
@@ -505,6 +570,9 @@ public class MainActivity extends AppCompatActivity {
 
     // 下载文件
     private void downLoadApk(String appUrl) {
+        if (!appUrl.contains("http")) {
+            appUrl = "http://" + appUrl;
+        }
         OkHttpUtils
                 .get()
                 .url(appUrl)
@@ -537,10 +605,20 @@ public class MainActivity extends AppCompatActivity {
     // 安装应用
     protected void installApk(File file) {
         Intent intent = new Intent("android.intent.action.VIEW");
-        intent.addCategory("android.intent.category.DEFAULT");
-        //文件作为数据源
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // 判读版本是否在7.0以上
+        if (Build.VERSION.SDK_INT >= 24) {
+            // 参数1 上下文, 参数2 Provider主机地址 和配置文件中保持一致   参数3  共享的文件
+            Uri apkUri = FileProvider.getUriForFile(this, "cn.hicc.suguan.dormitory.fileprovider", file);
+            // 添加这一句表示对目标应用临时授权该Uri所代表的文件
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        } else {
+            intent.addCategory("android.intent.category.DEFAULT");
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        }
+
         startActivityForResult(intent,0);
         android.os.Process.killProcess(android.os.Process.myPid());
     }

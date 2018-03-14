@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +21,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -46,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout text_input_password;
     private TextInputLayout text_input_username;
     private ProgressDialog mProgressDialog;
+    private int checkType = 1;
+    private RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (grantResults.length > 0) {
                     for (int grantResult : grantResults) {
                         if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                            ToastUtil.showShort("我们需要访问您的存储，用来存需要上传的照片");
-                            finish();
-                            return;
+                            ToastUtil.showShort("我们需要获取一些权限才能正常使用");
                         }
                     }
                 } else {
@@ -107,8 +109,14 @@ public class LoginActivity extends AppCompatActivity {
         if (SpUtil.getBoolean(Constant.IS_LOGIN)) {
             text_input_username.getEditText().setText(SpUtil.getString(Constant.USERNAME));
             text_input_password.getEditText().setText(SpUtil.getString(Constant.PASSWORD));
-            cb_password.setChecked(true);
-            checkLoginForService(SpUtil.getString(Constant.USERNAME), SpUtil.getString(Constant.PASSWORD));
+            //cb_password.setChecked(true);
+            if (SpUtil.getString(Constant.USERNAME).equals("hicc") &&
+                    SpUtil.getString(Constant.PASSWORD).equals("2018")) {
+                startActivity(new Intent(LoginActivity.this, LeaderActivity.class));
+                finish();
+            } else {
+                checkLoginForService(SpUtil.getString(Constant.USERNAME), SpUtil.getString(Constant.PASSWORD));
+            }
 //            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 //            finish();
         } else {
@@ -144,9 +152,19 @@ public class LoginActivity extends AppCompatActivity {
             isLogin = false;
         }
 
-        if (isLogin){
-            // 检查是否登录成功
-            checkLoginForService(username, password);
+        if (isLogin) {
+            // 判断是不是领导
+            if (username.equals("hicc") && password.equals("2018")) {
+                // 进入领导界面
+                SpUtil.putBoolean(Constant.IS_LOGIN, true);
+                SpUtil.putString(Constant.USERNAME, username);
+                SpUtil.putString(Constant.PASSWORD, password);
+                startActivity(new Intent(this,LeaderActivity.class));
+                finish();
+            } else {
+                // 检查是否登录成功
+                checkLoginForService(username, password);
+            }
         }
 
         // 给输入框设置文字改变监听事件，如果输入框文字改变，并且不为空，就将错误信息置空
@@ -159,6 +177,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
                     text_input_username.setError("");
+                }
+                // 如果账号是hicc就把单选框隐藏
+                if (s.toString().equals("hicc")) {
+                    radioGroup.setVisibility(View.GONE);
+                } else {
+                    radioGroup.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -217,6 +241,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SpUtil.putString(Constant.ASSISTANT_NAME, name);
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("type", checkType);
                                 intent.putExtra("weekCode", data.getInt("weekCode"));
 
                                 ToastUtil.showShort("登录成功");
@@ -235,7 +260,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // 检查是否记住密码
     private void checkRememberPassword(String username, String password) {
-        if (cb_password.isChecked()) {
+        /*if (cb_password.isChecked()) {
             SpUtil.putBoolean(Constant.IS_LOGIN, true);
             SpUtil.putString(Constant.USERNAME, username);
             SpUtil.putString(Constant.PASSWORD, password);
@@ -243,14 +268,34 @@ public class LoginActivity extends AppCompatActivity {
             SpUtil.putBoolean(Constant.IS_LOGIN, false);
             SpUtil.putString(Constant.USERNAME, username);
             SpUtil.putString(Constant.PASSWORD, password);
-        }
+        }*/
+        // 改为默认记住密码
+        SpUtil.putBoolean(Constant.IS_LOGIN, true);
+        SpUtil.putString(Constant.USERNAME, username);
+        SpUtil.putString(Constant.PASSWORD, password);
     }
 
     private void initView() {
         text_input_username = (TextInputLayout) findViewById(R.id.text_input_username);
         text_input_password = (TextInputLayout) findViewById(R.id.text_input_password);
 
-        cb_password = (AppCompatCheckBox) findViewById(R.id.cb_password);
+        radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+        // 单选框监听事件
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                switch (checkedId) {
+                    // 普查
+                    case R.id.cb_all:
+                        checkType = 1;
+                        break;
+                    // 抽查
+                    case R.id.cb_random:
+                        checkType = 2;
+                        break;
+                }
+            }
+        });
 
         bt_sign_in = (AppCompatButton) findViewById(R.id.bt_sign_in);
 

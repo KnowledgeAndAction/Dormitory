@@ -5,10 +5,11 @@ public class URL {
     /**
      * 接口地址
      */
-    public static final String LOGIN_URL = "http://192.168.2.109:8080/DormitoryManagement2.0/com.wlzx.dormitory.servlet/PhoneLoginServlet";
-    public static final String Get_User_Build="http://192.168.2.109:8080/DormitoryManagement2.0/com.wlzx.dormitory.servlet/PhoneSearchUserDorNum";
-    public static final String UP_SCORE="http://suguan.hicc.cn/GetScoreServlet";
-    public static final String Get_User_Name="http://192.168.2.109:8080/DormitoryManagement2.0/com.wlzx.dormitory.servlet/PhoneSearchStudentBedNumberServlet";
-    public static final String UP_IMAGE="http://suguan.hicc.cn/UploadHandleServlet";
-    public static final String CHECK_UPDATA = "http://192.168.2.109:8080/DormitoryManagement2.0/com.wlzx.dormitory.servlet/PhoneVersion";
+    private static final String HOST = "http://10.187.1.185/";
+    public static final String LOGIN_URL = HOST + "com.wlzx.dormitory.servlet/PhoneLoginServlet";
+    public static final String Get_User_Build = HOST + "com.wlzx.dormitory.servlet/PhoneSearchUserDorNum";
+    public static final String UP_SCORE = HOST + "com.wlzx.dormitory.servlet/PhoneUploadScore";
+    public static final String Get_User_Name = HOST + "com.wlzx.dormitory.servlet/PhoneSearchStudentBedNumberServlet";
+    public static final String UP_IMAGE = "http://suguan.hicc.cn/UploadHandleServlet";
+    public static final String CHECK_UPDATA = HOST + "com.wlzx.dormitory.servlet/PhoneVersion";
 }

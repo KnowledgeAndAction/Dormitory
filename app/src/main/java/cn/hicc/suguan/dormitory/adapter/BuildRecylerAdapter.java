@@ -1,6 +1,5 @@
 package cn.hicc.suguan.dormitory.adapter;
 
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,11 +50,13 @@ public class BuildRecylerAdapter extends RecyclerView.Adapter<BuildRecylerAdapte
             holder.tv_build_score.setText("未评分");
         }
         if (hostel.getCheckType() == 1) {
-            holder.tv_build_common.setTextColor(Color.rgb(0, 150, 136));
-            holder.tv_build_extracting.setTextColor(Color.rgb(97, 97, 97));
+            holder.tv_build_common.setText("普查");
+            //holder.tv_build_common.setTextColor(Color.rgb(0, 150, 136));
+            //holder.tv_build_extracting.setTextColor(Color.rgb(97, 97, 97));
         } else {
-            holder.tv_build_common.setTextColor(Color.rgb(97, 97, 97));
-            holder.tv_build_extracting.setTextColor(Color.rgb(0, 150, 136));
+            holder.tv_build_common.setText("抽查");
+            //holder.tv_build_common.setTextColor(Color.rgb(97, 97, 97));
+            //holder.tv_build_extracting.setTextColor(Color.rgb(0, 150, 136));
         }
     }
 

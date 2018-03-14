@@ -86,6 +86,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/tv_build_extracting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

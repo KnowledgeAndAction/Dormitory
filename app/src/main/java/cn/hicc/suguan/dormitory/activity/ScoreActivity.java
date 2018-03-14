@@ -2,6 +2,7 @@ package cn.hicc.suguan.dormitory.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -160,6 +161,8 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
     private NumberPicker np_balcony_clean;
     // 19. (加分项)室内装饰整体美观、风格统一（10分） 变量s
     private NumberPicker np_room_beautiful;
+    private int checkType;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +190,7 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         Intent intent = getIntent();
         build_code = intent.getIntExtra("buildCode", 0);
         build_num = intent.getIntExtra("buildNum", 0);
+        checkType = intent.getIntExtra("checkType", 0);
         Logs.d("build_code:"+build_code +",build_num:"+ build_num );
     }
 
@@ -282,7 +286,6 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
     private void initDormi() {
         initScore();
 
-
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -319,21 +322,24 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
     }
 
     private void UPSCORE(String scorestr) {
-        String time = Utils.GetTime();
-
+        showProgressDialog();
+        GetScore();
+        Logs.d(scorestr+"   "+ score);
         OkHttpUtils
-                .post()
+                .get()
                 .url(URL.UP_SCORE)
-                .addParams("scoreStr", scorestr)
-                .addParams("date", time)
-                .addParams("scroingPerson", SpUtil.getString(Constant.USERNAME))
-                .addParams("totalscore", score + "")
-                .addParams("number", build_code + "-" + build_num)
+                .addParams("scoreele", scorestr)
+                .addParams("user", SpUtil.getString(Constant.USERNAME))
+                .addParams("score", score + "")
+                .addParams("checkType", checkType + "")
+                .addParams("dorbui", build_code + "")
+                .addParams("dormitoryno", build_num + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Logs.e(e.toString());
+                        closeProgressDialog();
                         ToastUtil.showShort("上传失败，请检查网络");
                     }
 
@@ -341,7 +347,8 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
                     public void onResponse(String response, int id) {
                         try {
                             JSONObject object = new JSONObject(response);
-                            boolean up = object.getBoolean("bool");
+                            boolean up = object.getBoolean("flag");
+                            closeProgressDialog();
                             if (up) {
                                 CreatDialog();
                                 //finish();
@@ -661,6 +668,21 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
                 x = i1;
                 break;
 
+        }
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(ScoreActivity.this);
+        }
+        mProgressDialog.setMessage("上传中...");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+    }
+
+    private void closeProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
         }
     }
 }
