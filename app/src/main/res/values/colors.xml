@@ -13,4 +13,6 @@
     <color name="btn_orange_normal">#EB9316</color>
     <color name="btn_upscore_normal">#d33f3f</color>
     <color name="btn_upscore_pressed">#DA5A4D</color>
+
+    <color name="bar">#6CB0DF</color>
 </resources>

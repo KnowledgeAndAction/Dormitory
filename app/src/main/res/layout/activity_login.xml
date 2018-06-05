@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="Copyright © 2005 - 2017 网络中心. All Rights Reserved. "
+                android:text="Copyright © 2005 - 2018 网络中心. All Rights Reserved. "
                 android:textSize="10sp" />
         </LinearLayout>
     </ScrollView>

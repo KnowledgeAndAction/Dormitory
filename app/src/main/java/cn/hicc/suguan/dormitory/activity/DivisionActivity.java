@@ -23,10 +23,11 @@ import java.util.List;
 
 import cn.hicc.suguan.dormitory.R;
 import cn.hicc.suguan.dormitory.adapter.MyFragmentPagerAdapter;
-import cn.hicc.suguan.dormitory.fragment.LeaderDivisionFragment;
-import cn.hicc.suguan.dormitory.fragment.LeaderDorFragment;
-import cn.hicc.suguan.dormitory.fragment.LeaderGradeFragment;
-import cn.hicc.suguan.dormitory.fragment.LeaderSexAndCheckFragment;
+import cn.hicc.suguan.dormitory.fragment.DivisionCheckTypeFragment;
+import cn.hicc.suguan.dormitory.fragment.DivisionClassFragment;
+import cn.hicc.suguan.dormitory.fragment.DivisionGradeFragment;
+import cn.hicc.suguan.dormitory.fragment.DivisionSexFragment;
+import cn.hicc.suguan.dormitory.fragment.DivisionTeacherFragment;
 import cn.hicc.suguan.dormitory.model.Score;
 import cn.hicc.suguan.dormitory.utils.Constant;
 import cn.hicc.suguan.dormitory.utils.Logs;
@@ -37,20 +38,20 @@ import cn.hicc.suguan.dormitory.view.ScrollViewPager;
 import okhttp3.Call;
 
 /**
- * 领导界面
+ * 学部界面
  */
 
-public class LeaderActivity extends MainBaseActivity {
+public class DivisionActivity extends MainBaseActivity {
 
     private ProgressDialog mProgressDialog;
     private int weekCode;
-    private List<Score> mAcademyScoreList = new ArrayList<>();
+    private List<Score> mTeacherScoreList = new ArrayList<>();
     private List<Score> mGradeScoreList = new ArrayList<>();
     private List<Score> mSexScoreList = new ArrayList<>();
     private List<Score> mCheckTypeScoreList = new ArrayList<>();
-    private List<Score> mDorScoreList = new ArrayList<>();
-    private List<Score> mDivisionScoreList = new ArrayList<>();
+    private List<Score> mClassScoreList = new ArrayList<>();
     private ScrollViewPager viewpager;
+    private double avg;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -78,7 +79,7 @@ public class LeaderActivity extends MainBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leader);
+        setContentView(R.layout.activity_division);
 
         Intent intent = getIntent();
         weekCode = intent.getIntExtra("weekCode", 0);
@@ -92,12 +93,11 @@ public class LeaderActivity extends MainBaseActivity {
     private void setUI() {
         // 初始化viewpager
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new LeaderDivisionFragment(weekCode, mDivisionScoreList),"学部成绩对比");
-        adapter.addFrag(new LeaderDivisionFragment(weekCode, mAcademyScoreList),"书院成绩对比");
-        adapter.addFrag(new LeaderGradeFragment(weekCode, mGradeScoreList),"年级成绩对比");
-        adapter.addFrag(new LeaderDorFragment(weekCode,mDorScoreList),"宿舍楼成绩对比");
-        adapter.addFrag(new LeaderSexAndCheckFragment(weekCode,mSexScoreList),"性别成绩对比");
-        adapter.addFrag(new LeaderSexAndCheckFragment(weekCode,mCheckTypeScoreList),"检查类型成绩对比");
+        adapter.addFrag(new DivisionGradeFragment(avg,weekCode, mGradeScoreList),"年级成绩对比");
+        adapter.addFrag(new DivisionTeacherFragment(avg,weekCode,mTeacherScoreList),"导员成绩对比");
+        adapter.addFrag(new DivisionClassFragment(avg,weekCode,mClassScoreList),"班级成绩对比");
+        adapter.addFrag(new DivisionSexFragment(avg,weekCode,mSexScoreList),"性别成绩对比");
+        adapter.addFrag(new DivisionCheckTypeFragment(avg,weekCode,mCheckTypeScoreList),"检查类型成绩对比");
         viewpager.setAdapter(adapter);
     }
 
@@ -106,7 +106,8 @@ public class LeaderActivity extends MainBaseActivity {
         showDialog();
         OkHttpUtils
                 .get()
-                .url(URL.LEADER_CHECK_SCORE)
+                .url(URL.DIVISION_CHECK_SCORE)
+                .addParams("divisionName",SpUtil.getString(Constant.ASSISTANT_NAME))
                 .addParams("weekCode",weekCode+"")
                 .build()
                 .execute(new StringCallback() {
@@ -144,13 +145,13 @@ public class LeaderActivity extends MainBaseActivity {
                                 case "Description":
                                     mCheckTypeScoreList.add(score);
                                     break;
-                                // 宿舍楼平均成绩信息
-                                case "DormitoryBuilding":
-                                    mDorScoreList.add(score);
+                                // 班级平均成绩信息
+                                case "Class":
+                                    mClassScoreList.add(score);
                                     break;
-                                // 书院平均成绩信息
-                                case "Academy":
-                                    mAcademyScoreList.add(score);
+                                // 导员平均成绩信息
+                                case "Instructor":
+                                    mTeacherScoreList.add(score);
                                     break;
                                 // 年级平均成绩信息
                                 case "TimesCode":
@@ -160,9 +161,9 @@ public class LeaderActivity extends MainBaseActivity {
                                 case "Gender":
                                     mSexScoreList.add(score);
                                     break;
-                                // 学部平均成绩信息
-                                case "Division":
-                                    mDivisionScoreList.add(score);
+                                // 总平均分
+                                case "Avg":
+                                    avg = info.getDouble("avgSocre");
                                     break;
                             }
                         }
@@ -216,18 +217,13 @@ public class LeaderActivity extends MainBaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_leader, menu);
+        getMenuInflater().inflate(R.menu.menu_admin, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // 灵活查询
-        if (id == R.id.action_flexible) {
-            startActivity(new Intent(this, LeaderFlexibleActivity.class));
-            return true;
-        }
         if (id == R.id.action_exit) {
             SpUtil.remove(Constant.PASSWORD);
             SpUtil.remove(Constant.ASSISTANT_NAME);

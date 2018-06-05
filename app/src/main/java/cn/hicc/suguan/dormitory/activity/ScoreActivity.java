@@ -55,7 +55,9 @@ import cn.hicc.suguan.dormitory.utils.URL;
 import cn.hicc.suguan.dormitory.utils.Utils;
 import okhttp3.Call;
 
-
+/**
+ * 打分页面
+ */
 public class ScoreActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, NumberPicker.OnValueChangeListener {
 
     private int a = 1;
@@ -246,8 +248,8 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         OkHttpUtils
                 .post()
                 .url(URL.Get_User_Name)
-                .addParams("DorBuiCode", build_code + "")
-                .addParams("DorBedNum", build_num + "")
+                .addParams("DorBuiCode", build_code + "")   // 宿舍楼
+                .addParams("DorBedNum", build_num + "")     // 宿舍号
                 .build()
                 .execute(new StringCallback() {
                     @Override

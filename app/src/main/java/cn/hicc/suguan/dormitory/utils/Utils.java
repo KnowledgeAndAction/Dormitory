@@ -10,38 +10,39 @@ import java.util.Date;
 import cn.hicc.suguan.dormitory.MyApplication;
 
 public class Utils {
-	public static String GetTime() {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date(System.currentTimeMillis());// 获取当前时间
-		String time = formatter.format(date);
-		return time;
-	}
-	public static String GetShortDate() {
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy年MM月");
-		String date = sDateFormat.format(new Date());
-		return date;
-	}
+    public static String GetTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());// 获取当前时间
+        String time = formatter.format(date);
+        return time;
+    }
 
-	//版本名
-	public static String getVersionName() {
-		return getPackageInfo(MyApplication.getContext()).versionName;
-	}
+    public static String GetShortDate() {
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy年MM月");
+        String date = sDateFormat.format(new Date());
+        return date;
+    }
 
-	//版本号
-	public static int getVersionCode() {
-		return getPackageInfo(MyApplication.getContext()).versionCode;
-	}
+    //版本名
+    public static String getVersionName() {
+        return getPackageInfo(MyApplication.getContext()).versionName;
+    }
 
-	private static PackageInfo getPackageInfo(Context context) {
-		PackageInfo pi = null;
-		try {
-			PackageManager pm = context.getPackageManager();
-			pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_CONFIGURATIONS);
-			return pi;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    //版本号
+    public static int getVersionCode() {
+        return getPackageInfo(MyApplication.getContext()).versionCode;
+    }
 
-		return pi;
-	}
+    private static PackageInfo getPackageInfo(Context context) {
+        PackageInfo pi = null;
+        try {
+            PackageManager pm = context.getPackageManager();
+            pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_CONFIGURATIONS);
+            return pi;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return pi;
+    }
 }

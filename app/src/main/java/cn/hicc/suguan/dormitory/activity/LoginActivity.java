@@ -14,9 +14,7 @@ import android.support.annotation.IdRes;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -41,10 +39,9 @@ import cn.hicc.suguan.dormitory.utils.URL;
 import cn.hicc.suguan.dormitory.utils.Utils;
 import okhttp3.Call;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends MainBaseActivity {
 
     private AppCompatButton bt_sign_in;
-    private AppCompatCheckBox cb_password;
     private TextInputLayout text_input_password;
     private TextInputLayout text_input_username;
     private ProgressDialog mProgressDialog;
@@ -109,16 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         if (SpUtil.getBoolean(Constant.IS_LOGIN)) {
             text_input_username.getEditText().setText(SpUtil.getString(Constant.USERNAME));
             text_input_password.getEditText().setText(SpUtil.getString(Constant.PASSWORD));
-            //cb_password.setChecked(true);
-            if (SpUtil.getString(Constant.USERNAME).equals("hicc") &&
-                    SpUtil.getString(Constant.PASSWORD).equals("2018")) {
-                startActivity(new Intent(LoginActivity.this, LeaderActivity.class));
-                finish();
-            } else {
-                checkLoginForService(SpUtil.getString(Constant.USERNAME), SpUtil.getString(Constant.PASSWORD));
-            }
-//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//            finish();
+            checkLoginForService(SpUtil.getString(Constant.USERNAME), SpUtil.getString(Constant.PASSWORD));
         } else {
             text_input_username.getEditText().setText(SpUtil.getString(Constant.USERNAME));
         }
@@ -153,18 +141,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (isLogin) {
-            // 判断是不是领导
-            if (username.equals("hicc") && password.equals("2018")) {
-                // 进入领导界面
-                SpUtil.putBoolean(Constant.IS_LOGIN, true);
-                SpUtil.putString(Constant.USERNAME, username);
-                SpUtil.putString(Constant.PASSWORD, password);
-                startActivity(new Intent(this,LeaderActivity.class));
-                finish();
-            } else {
-                // 检查是否登录成功
-                checkLoginForService(username, password);
-            }
+            // 检查是否登录成功
+            checkLoginForService(username, password);
         }
 
         // 给输入框设置文字改变监听事件，如果输入框文字改变，并且不为空，就将错误信息置空
@@ -179,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                     text_input_username.setError("");
                 }
                 // 如果账号是hicc就把单选框隐藏
-                if (s.toString().equals("hicc")) {
+                if (s.toString().equals("1001") || s.toString().equals("1002") || s.toString().equals("1003")) {
                     radioGroup.setVisibility(View.GONE);
                 } else {
                     radioGroup.setVisibility(View.VISIBLE);
@@ -217,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
                 .get()
                 .url(URL.LOGIN_URL)
                 .addParams("userName", username)
-                .addParams("userPassword", password)
+                .addParams("userPass", password)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -237,16 +215,18 @@ public class LoginActivity extends AppCompatActivity {
                                 checkRememberPassword(username, password);
 
                                 JSONObject data = jsonObject.getJSONObject("data");
+                                // 获取用户姓名
                                 String name = data.getString("name");
                                 SpUtil.putString(Constant.ASSISTANT_NAME, name);
 
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra("type", checkType);
-                                intent.putExtra("weekCode", data.getInt("weekCode"));
+                                // 获取用户等级
+                                int level = data.getInt("level");
+                                // 获取当前周数  接口暂时修改
+                                int weekCode = data.getInt("weekCode");
+                                //int weekCode = 11;
 
-                                ToastUtil.showShort("登录成功");
-                                startActivity(intent);
-                                finish();
+                                // 进入主界面
+                                enterHome(level,weekCode);
                             } else {
                                 closeProgressDialog();
                                 ToastUtil.showShort("用户名或密码错误");
@@ -256,6 +236,42 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    // 根据用户等级进入不同的界面
+    private void enterHome(int level, int weekCode) {
+        switch (level) {
+            // 查宿人员
+            case 1:
+                Intent intent = new Intent(LoginActivity.this, CheckOutActivity.class);
+                intent.putExtra("type", checkType);
+                intent.putExtra("weekCode", weekCode);
+                startActivity(intent);
+                break;
+            // 导员
+            case 3:
+                Intent intent3 = new Intent(LoginActivity.this, TeacherActivity.class);
+                intent3.putExtra("weekCode", weekCode);
+                startActivity(intent3);
+                break;
+            // 学部
+            case 2:
+                Intent intent2 = new Intent(LoginActivity.this, DivisionActivity.class);
+                intent2.putExtra("weekCode", weekCode);
+                startActivity(intent2);
+                break;
+            // 学院领导
+            case 5:
+            case 6:
+                Intent intent5 = new Intent(LoginActivity.this, LeaderActivity.class);
+                intent5.putExtra("weekCode", weekCode);
+                startActivity(intent5);
+                break;
+
+        }
+
+        ToastUtil.showShort("登录成功");
+        finish();
     }
 
     // 检查是否记住密码

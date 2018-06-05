@@ -28,7 +28,6 @@
         android:layout_gravity="bottom"
         android:layout_marginTop="3dp"
         android:background="#ffffff"
-        app:tabMode="scrollable"
         app:tabIndicatorColor="#e1e0ed" />
 
     <cn.hicc.suguan.dormitory.view.ScrollViewPager
