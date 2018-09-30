@@ -24,7 +24,12 @@ public class DivisionClassStringAxisValueFormatter implements IAxisValueFormatte
 
     @Override
     public String getFormattedValue(float v, AxisBase axisBase) {
-        String[] split = mStrs.get((int) v).split(" ");
-        return split[0];
+        String formatted= "";
+        if (v < mStrs.size()) {
+            String[] split = mStrs.get((int) v).split(" ");
+            formatted = split[1];
+        }
+
+        return formatted;
     }
 }

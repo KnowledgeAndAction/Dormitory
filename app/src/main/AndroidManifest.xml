@@ -15,22 +15,40 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoTitle">
-        <activity android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait" >
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CheckOutActivity"
+        <activity
+            android:name=".activity.CheckOutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ScoreActivity"
+        <activity
+            android:name=".activity.ScoreActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.LeaderFlexibleActivity" />
-        <activity android:name=".activity.TeacherActivity" />
-        <activity android:name=".activity.DivisionActivity" />
-        <activity android:name=".activity.LeaderActivity" />
+        <activity
+            android:name=".activity.LeaderFlexibleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TeacherActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.DivisionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LeaderActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.DorDetailScoreActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.ChangeScoreActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.DorDetailScore2Activity"
+            android:screenOrientation="portrait" />
 
 
         <provider

@@ -24,6 +24,9 @@ public class StringAxisValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float v, AxisBase axisBase) {
-        return mStrs.get((int)v);
+        if (mStrs.size() > 0 && v < mStrs.size()) {
+            return mStrs.get((int)v);
+        }
+        return "";
     }
 }

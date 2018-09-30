@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="cn.hicc.suguan.dormitory.activity.DorDetailScoreActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_look_dor_member"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#849ff7"
+                android:text="宿舍成员信息"
+                android:textColor="#fff" />
+
+            <com.bin.david.form.core.SmartTable
+                android:id="@+id/table_dor_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/bt_look_all_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:backgroundTint="#849ff7"
+                android:text="普查评分详情"
+                android:textColor="#fff" />
+
+            <com.bin.david.form.core.SmartTable
+                android:id="@+id/table_all_check_score"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/bt_look_spot_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:backgroundTint="#849ff7"
+                android:text="抽查评分详情"
+                android:textColor="#fff" />
+
+            <com.bin.david.form.core.SmartTable
+                android:id="@+id/table_spot_check_score"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

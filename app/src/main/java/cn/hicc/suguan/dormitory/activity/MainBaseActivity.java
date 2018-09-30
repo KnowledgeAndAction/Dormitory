@@ -113,7 +113,7 @@ public class MainBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //下载apk
-                downLoadApk(appUrl);
+                downLoadApk(appUrl,"宿舍管理.apk");
                 // 显示一个进度条对话框
                 showDownloadProgressDialog();
             }
@@ -130,7 +130,7 @@ public class MainBaseActivity extends AppCompatActivity {
     }
 
     // 下载文件
-    protected void downLoadApk(String appUrl) {
+    protected void downLoadApk(String appUrl,String fileName) {
         if (!appUrl.contains("http")) {
             appUrl = "http://" + appUrl;
         }
@@ -138,7 +138,7 @@ public class MainBaseActivity extends AppCompatActivity {
                 .get()
                 .url(appUrl)
                 .build()
-                .execute(new FileCallBack(getExternalFilesDir("apk").getPath(),"宿舍管理.apk") {
+                .execute(new FileCallBack(getExternalFilesDir("apk").getPath(),fileName) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ToastUtil.showShort("下载失败："+e.toString());

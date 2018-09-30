@@ -10,7 +10,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -31,6 +33,7 @@ import cn.hicc.suguan.dormitory.utils.Logs;
 import cn.hicc.suguan.dormitory.utils.SpUtil;
 import cn.hicc.suguan.dormitory.utils.ToastUtil;
 import cn.hicc.suguan.dormitory.utils.URL;
+import cn.hicc.suguan.dormitory.utils.Utils;
 import cn.hicc.suguan.dormitory.view.ScrollViewPager;
 import okhttp3.Call;
 
@@ -45,6 +48,10 @@ public class TeacherActivity extends MainBaseActivity {
     private List<Score> mDorScoreList = new ArrayList<>();
     private List<Score> mClassScoreList = new ArrayList<>();
     private ScrollViewPager viewpager;
+    private MyFragmentPagerAdapter adapter;
+    private ArrayList<Integer> weekNum;
+    private int currentWeekCode;    // 当前周数
+    private int currentMonth;    // 当前周数
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -64,10 +71,17 @@ public class TeacherActivity extends MainBaseActivity {
                 case 2:
                     ToastUtil.showShort("解析数据失败");
                     closeDialog();
+                // 无数据
+                case 3:
+                    setUINoData();
+                    closeDialog();
                     break;
             }
         }
     };
+    private ArrayList<Integer> monthNum;
+    private String dateType = "week";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,29 +90,44 @@ public class TeacherActivity extends MainBaseActivity {
 
         Intent intent = getIntent();
         weekCode = intent.getIntExtra("weekCode", 0);
+        currentWeekCode = weekCode;
+        currentMonth = Utils.getMonth();
 
         initView();
+
+        // 初始化选择器数据
+        initPickerViewData();
 
         initData();
     }
 
-    // 当获取到数据后，在设置viewpager适配器
+    // 当获取到数据后，调取fragment方法更新数据
     private void setUI() {
-        // 初始化viewpager
-        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TeacherDormFragment(weekCode,mDorScoreList),"宿舍成绩对比");
-        adapter.addFrag(new TeacherClassFragment(weekCode,mClassScoreList),"班级成绩对比");
-        viewpager.setAdapter(adapter);
+        TeacherClassFragment c = (TeacherClassFragment) adapter.getItem(0);
+        c.setData(weekCode,mClassScoreList,dateType);
+        TeacherDormFragment t = (TeacherDormFragment) adapter.getItem(1);
+        t.setData(weekCode,mDorScoreList,dateType);
+    }
+
+    // 当获取到数据后，调取fragment方法更新数据
+    private void setUINoData() {
+        TeacherClassFragment c = (TeacherClassFragment) adapter.getItem(0);
+        c.clearData();
+        TeacherDormFragment t = (TeacherDormFragment) adapter.getItem(1);
+        t.clearData();
     }
 
     // 获取数据
     private void initData() {
         showDialog();
+        mDorScoreList.clear();
+        mClassScoreList.clear();
         OkHttpUtils
                 .get()
                 .url(URL.TEACHER_CHECK_SCORE)
                 .addParams("instructorName",SpUtil.getString(Constant.ASSISTANT_NAME))
                 .addParams("weekCode",weekCode+"")
+                .addParams("dateType",dateType)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -112,6 +141,7 @@ public class TeacherActivity extends MainBaseActivity {
                     public void onResponse(String response, int id) {
                         // 解析json
                         resolveJson(response);
+                        Logs.d(response);
                     }
                 });
     }
@@ -141,9 +171,13 @@ public class TeacherActivity extends MainBaseActivity {
                                     break;
                             }
                         }
-                        // 请求数据成功
-                        mHandler.sendEmptyMessage(0);
-
+                        if (data.length() > 0) {
+                            // 请求数据成功
+                            mHandler.sendEmptyMessage(0);
+                        } else {
+                            // 没有要查询的数据
+                            mHandler.sendEmptyMessage(3);
+                        }
                     } else {
                         // 请求数据失败
                         mHandler.sendEmptyMessage(1);
@@ -167,6 +201,11 @@ public class TeacherActivity extends MainBaseActivity {
         viewpager = (ScrollViewPager) findViewById(R.id.viewpager);
         // 设置viewpager是否禁止滑动
         viewpager.setNoScroll(true);
+        // 设置适配器
+        adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new TeacherClassFragment(),"班级成绩对比");
+        adapter.addFrag(new TeacherDormFragment(),"宿舍成绩对比");
+        viewpager.setAdapter(adapter);
 
         // 初始化tablayout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -191,13 +230,14 @@ public class TeacherActivity extends MainBaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_admin, menu);
+        getMenuInflater().inflate(R.menu.menu_teacher, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        // 注销
         if (id == R.id.action_exit) {
             SpUtil.remove(Constant.PASSWORD);
             SpUtil.remove(Constant.ASSISTANT_NAME);
@@ -206,6 +246,80 @@ public class TeacherActivity extends MainBaseActivity {
             finish();
             return true;
         }
+        // 切换周数
+        if (id == R.id.action_week) {
+            showWeekPickerView();
+            return true;
+        }
+        if (id == R.id.action_month) {
+            showMonthPickerView();
+            return true;
+        }
+        // 列表展示
+        if (id == R.id.action_list) {
+            TeacherClassFragment c = (TeacherClassFragment) adapter.getItem(0);
+            c.changeView();
+            TeacherDormFragment t = (TeacherDormFragment) adapter.getItem(1);
+            t.changeView();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    // 设置选择器数据
+    private void initPickerViewData() {
+        weekNum = new ArrayList<>();
+        for (int i=1; i<=17;i++) {
+            weekNum.add(i);
+        }
+
+        monthNum = new ArrayList<>();
+        for (int i=1; i<=12; i++) {
+            monthNum.add(i);
+        }
+    }
+
+    // 显示周数选择器
+    private void showWeekPickerView() {
+        //条件选择器
+        OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                weekCode = weekNum.get(options1);
+                dateType = "week";
+
+                // 重新获取分数
+                initData();
+            }
+        }).setTitleText("选择周数(本周第"+currentWeekCode+"周)")
+                .setTitleSize(14)
+                .build();
+
+        pvOptions.setSelectOptions(currentWeekCode-1);
+        pvOptions.setPicker(weekNum);
+        pvOptions.show();
+    }
+
+    // 显示月数选择器
+    private void showMonthPickerView() {
+        //条件选择器
+        OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                weekCode = monthNum.get(options1);
+                dateType = "month";
+
+                // 重新获取分数
+                initData();
+            }
+        }).setTitleText("选择月份(本月"+currentMonth+"月)")
+                .setTitleSize(14)
+                .build();
+
+        pvOptions.setSelectOptions(currentMonth-1);
+        pvOptions.setPicker(monthNum);
+        pvOptions.show();
     }
 }

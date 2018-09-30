@@ -15,62 +15,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/bt_condition1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/md_light_blue_400"
-            android:text="查询条件1"
-            android:textColor="#ffffff"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/bt_condition2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/md_light_blue_400"
-            android:text="查询条件2"
-            android:textColor="#ffffff"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/bt_condition3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/md_light_blue_400"
-            android:text="查询条件3"
-            android:textColor="#ffffff"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/bt_send"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/md_light_blue_400"
-            android:text="查询"
-            android:textColor="#ffffff"
-            android:textSize="12sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <Button
             android:id="@+id/bt_shuyuan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:backgroundTint="@color/md_light_blue_400"
-            android:text="筛选条件1"
+            android:text="筛选书院"
             android:textColor="#ffffff"
             android:textSize="12sp" />
 
@@ -78,9 +28,9 @@
             android:id="@+id/bt_sushe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:backgroundTint="@color/md_light_blue_400"
-            android:text="筛选条件2"
+            android:text="筛选宿舍楼"
             android:textColor="#ffffff"
             android:textSize="12sp" />
 
@@ -88,9 +38,9 @@
             android:id="@+id/bt_wuchengji"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:backgroundTint="@color/md_light_blue_400"
-            android:text="筛选条件3"
+            android:text="筛选无成绩"
             android:textColor="#ffffff"
             android:textSize="12sp" />
 
@@ -98,12 +48,66 @@
             android:id="@+id/bt_select"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:backgroundTint="@color/md_light_blue_400"
             android:text="筛选"
             android:textColor="#ffffff"
             android:textSize="12sp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="书院"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="宿舍楼"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="宿舍号"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="普查"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="抽查"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout

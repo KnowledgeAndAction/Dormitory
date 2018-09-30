@@ -1,6 +1,5 @@
 package cn.hicc.suguan.dormitory.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,24 +20,17 @@ import cn.hicc.suguan.dormitory.view.LeaderDivisionStringAxisValueFormatter;
 
 /**
  * Created by 陈帅 on 2018/6/5/031.
- * 领导学部对比   领导书院对比
+ * 领导学部对比
  */
 
 public class LeaderDivisionFragment extends Fragment {
 
     private BarChart mChart;
     private List<Score> mDivisionScoreList;
-    private int weekCode;
     private List<String> xAxisValues;
     private List<Float> yAxisValues;
 
     public LeaderDivisionFragment() {
-    }
-
-    @SuppressLint("ValidFragment")
-    public LeaderDivisionFragment(int weekCode, List<Score> mDivisionScoreList) {
-        this.mDivisionScoreList = mDivisionScoreList;
-        this.weekCode = weekCode;
     }
 
     @Nullable
@@ -48,8 +40,6 @@ public class LeaderDivisionFragment extends Fragment {
 
         initView(view);
 
-        initData();
-
         return view;
     }
 
@@ -57,7 +47,30 @@ public class LeaderDivisionFragment extends Fragment {
         mChart = (BarChart) view.findViewById(R.id.chart1);
     }
 
-    private void initData() {
+    // 设置数据
+    public void setData(int weekCode, List<Score> mDivisionScoreList, String dataType) {
+        this.mDivisionScoreList = mDivisionScoreList;
+
+        String name = "";
+        switch (dataType) {
+            case "week":
+                name = "第" + weekCode + "周";
+                break;
+            case "month":
+                name = weekCode + "月";
+                break;
+        }
+
+        if (mChart != null) {
+            initData(name);
+        }
+    }
+
+    public void clearData() {
+        mChart.clear();
+    }
+
+    private void initData(String name) {
         xAxisValues = new ArrayList<>();
         yAxisValues = new ArrayList<>();
         for (Score score : mDivisionScoreList) {
@@ -66,6 +79,6 @@ public class LeaderDivisionFragment extends Fragment {
         }
 
         IAxisValueFormatter iAxisValueFormatter = new LeaderDivisionStringAxisValueFormatter(xAxisValues);
-        MPChartHelper.setBarChart(getContext(),mChart,xAxisValues,yAxisValues,"第" + weekCode + "周" ,iAxisValueFormatter);
+        MPChartHelper.setBarChart(getContext(),mChart,xAxisValues,yAxisValues,name ,iAxisValueFormatter,false);
     }
 }

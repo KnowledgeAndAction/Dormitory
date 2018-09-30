@@ -7,6 +7,7 @@ package cn.hicc.suguan.dormitory.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import java.util.List;
 
 import cn.hicc.suguan.dormitory.R;
 import cn.hicc.suguan.dormitory.utils.Constant;
+import cn.hicc.suguan.dormitory.utils.Logs;
 import cn.hicc.suguan.dormitory.utils.SpUtil;
 import cn.hicc.suguan.dormitory.utils.ToastUtil;
 import cn.hicc.suguan.dormitory.utils.URL;
@@ -198,9 +200,14 @@ public class LoginActivity extends MainBaseActivity {
                 .addParams("userPass", password)
                 .build()
                 .execute(new StringCallback() {
+
+                    private int level;
+
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ToastUtil.showShort("网络异常，请稍后重试");
+                        // 弹出是否下载vpn对话框
+                        showDownloadVPNDialog();
                         closeProgressDialog();
                     }
 
@@ -220,7 +227,7 @@ public class LoginActivity extends MainBaseActivity {
                                 SpUtil.putString(Constant.ASSISTANT_NAME, name);
 
                                 // 获取用户等级
-                                int level = data.getInt("level");
+                                level = data.getInt("level");
                                 // 获取当前周数  接口暂时修改
                                 int weekCode = data.getInt("weekCode");
                                 //int weekCode = 11;
@@ -233,9 +240,47 @@ public class LoginActivity extends MainBaseActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Logs.e(e.toString());
+                            if (e.toString().equals("org.json.JSONException: No value for weekCode")) {
+                                // 进入主界面
+                                int weekCode = 16;
+                                enterHome(level,weekCode);
+                            } else {
+                                closeProgressDialog();
+                                ToastUtil.showShort("登录失败，请稍后重试");
+                            }
                         }
                     }
                 });
+    }
+
+    private void showDownloadVPNDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        //设置对话框左上角图标
+        builder.setIcon(R.mipmap.logo);
+        //设置对话框标题
+        builder.setTitle("下载VPN应用");
+        //设置对话框内容
+        builder.setMessage("请检查是否在校园网络下，如果没有请打开VPN工具EasyConnect，连接VPN\n输入地址：v02.hbu.cn\n用户名：学号/工号\n初始密码：身份证后六位");
+        //设置积极的按钮
+        builder.setPositiveButton("下载VPN工具", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //下载apk
+                downLoadApk("http://www.chenjl.xyz/Download/DormitoryAppVpn.apk","EasyConnect.apk");
+                // 显示一个进度条对话框
+                showDownloadProgressDialog();
+            }
+        });
+        //设置消极的按钮
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
     }
 
     // 根据用户等级进入不同的界面

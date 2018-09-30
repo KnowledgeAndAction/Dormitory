@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="选择宿舍"
+        android:textColor="#868686"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bt_dor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/md_light_blue_400"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:text="选择宿舍楼"
+            android:textColor="@color/md_white_1000"
+            android:textStyle="bold" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_dor_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:hint="宿舍号"
+                android:inputType="number"
+                android:maxLines="1"
+                android:textCursorDrawable="@drawable/edittext_cursor" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="查宿人员账号"
+        android:textColor="#868686"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/et_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:hint="请输入正确的账号，否则无法修改成绩"
+        android:inputType="number"
+        android:maxLines="1"
+        android:padding="16dp"
+        android:textCursorDrawable="@drawable/edittext_cursor" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="选择检查方式"
+        android:textColor="#868686"
+        android:textSize="14sp" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="14dp">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/cb_all"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="普查" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/cb_random"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="抽查" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/bt_change"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_style_alert_dialog_special"
+        android:text="进入修改成绩页"
+        android:textColor="#f0e7e7"
+        android:textSize="16sp" />
+
+</LinearLayout>

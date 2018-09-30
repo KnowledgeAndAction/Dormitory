@@ -16,9 +16,15 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_flexible"
+        android:id="@+id/action_list"
         android:orderInCategory="100"
-        android:title="灵活查询"
+        android:title="切换展示形式"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_change"
+        android:orderInCategory="100"
+        android:title="修改宿舍成绩"
         app:showAsAction="never" />
 
     <item

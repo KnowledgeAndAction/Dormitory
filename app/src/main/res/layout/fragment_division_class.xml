@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/chart1"
+    <ScrollView
+        android:id="@+id/sv_barchart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_barchart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_table"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </LinearLayout>

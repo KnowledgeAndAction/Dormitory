@@ -4,8 +4,14 @@
     tools:context="com.lew.dormitory.MainActivity">
 
     <item
-        android:id="@+id/action_exit"
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="注销"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_upload_photo"
+        android:orderInCategory="100"
+        android:title="上传图片"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>

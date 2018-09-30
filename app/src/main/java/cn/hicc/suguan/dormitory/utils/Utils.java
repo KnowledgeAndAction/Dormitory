@@ -17,6 +17,14 @@ public class Utils {
         return time;
     }
 
+    public static int getMonth() {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM");
+        Date date = new Date(System.currentTimeMillis());// 获取当前时间
+        String month = formatter.format(date);
+
+        return Integer.parseInt(month);
+    }
+
     public static String GetShortDate() {
         SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy年MM月");
         String date = sDateFormat.format(new Date());

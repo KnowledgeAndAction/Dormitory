@@ -37,14 +37,19 @@ public class MPChartHelper {
      * @param yAxisValue
      * @param title 图例文字
      * @param xAxisFormatter 自定义的x轴值格式化器
+     * @param isZoom 是否缩放
      */
     public static void setBarChart(Context context,BarChart barChart, List<String> xAxisValue, List<Float> yAxisValue,
-                                   String title, IAxisValueFormatter xAxisFormatter) {
+                                   String title, IAxisValueFormatter xAxisFormatter,boolean isZoom) {
         barChart.getDescription().setEnabled(false);//设置描述
-        barChart.setPinchZoom(true);//设置按比例放缩柱状图
+        barChart.setPinchZoom(isZoom);//设置按比例放缩柱状图
+        barChart.setScaleEnabled(isZoom);     //启用/禁用缩放图表上的两个轴。
+        barChart.setNoDataText("暂无数据");
+
 
         // 字体
         mTfLight = Typeface.createFromAsset(context.getAssets(), "OpenSans-Light.ttf");
+        barChart.setNoDataTextTypeface(mTfLight);
 
         //x坐标轴设置
         XAxis xAxis = barChart.getXAxis();//获取x轴
@@ -116,6 +121,7 @@ public class MPChartHelper {
 
         if (barChart.getData() != null && barChart.getData().getDataSetCount() > 0) {
             set1 = (BarDataSet) barChart.getData().getDataSetByIndex(0);
+            set1.setLabel(title); // 设置图例文字
             set1.setValues(entries);
             barChart.getData().notifyDataChanged();
             barChart.notifyDataSetChanged();

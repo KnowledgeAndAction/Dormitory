@@ -10,7 +10,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -23,10 +25,8 @@ import java.util.List;
 
 import cn.hicc.suguan.dormitory.R;
 import cn.hicc.suguan.dormitory.adapter.MyFragmentPagerAdapter;
-import cn.hicc.suguan.dormitory.fragment.DivisionCheckTypeFragment;
 import cn.hicc.suguan.dormitory.fragment.DivisionClassFragment;
-import cn.hicc.suguan.dormitory.fragment.DivisionGradeFragment;
-import cn.hicc.suguan.dormitory.fragment.DivisionSexFragment;
+import cn.hicc.suguan.dormitory.fragment.DivisionBasisFragment;
 import cn.hicc.suguan.dormitory.fragment.DivisionTeacherFragment;
 import cn.hicc.suguan.dormitory.model.Score;
 import cn.hicc.suguan.dormitory.utils.Constant;
@@ -34,6 +34,7 @@ import cn.hicc.suguan.dormitory.utils.Logs;
 import cn.hicc.suguan.dormitory.utils.SpUtil;
 import cn.hicc.suguan.dormitory.utils.ToastUtil;
 import cn.hicc.suguan.dormitory.utils.URL;
+import cn.hicc.suguan.dormitory.utils.Utils;
 import cn.hicc.suguan.dormitory.view.ScrollViewPager;
 import okhttp3.Call;
 
@@ -52,6 +53,10 @@ public class DivisionActivity extends MainBaseActivity {
     private List<Score> mClassScoreList = new ArrayList<>();
     private ScrollViewPager viewpager;
     private double avg;
+    private MyFragmentPagerAdapter adapter;
+    private ArrayList<Integer> weekNum;
+    private int currentWeekCode;
+    private int currentMonth;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -72,9 +77,17 @@ public class DivisionActivity extends MainBaseActivity {
                     ToastUtil.showShort("解析数据失败");
                     closeDialog();
                     break;
+                // 无数据
+                case 3:
+                    setUINoData();
+                    closeDialog();
+                    break;
             }
         }
     };
+    private ArrayList<Integer> monthNum;
+    private String dateType = "week";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,32 +96,55 @@ public class DivisionActivity extends MainBaseActivity {
 
         Intent intent = getIntent();
         weekCode = intent.getIntExtra("weekCode", 0);
+        currentWeekCode = weekCode;
+        currentMonth = Utils.getMonth();
 
         initView();
+
+        // 初始化选择器数据
+        initPickerViewData();
 
         initData();
     }
 
     // 当获取到数据后，在设置viewpager适配器
     private void setUI() {
-        // 初始化viewpager
-        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new DivisionGradeFragment(avg,weekCode, mGradeScoreList),"年级成绩对比");
-        adapter.addFrag(new DivisionTeacherFragment(avg,weekCode,mTeacherScoreList),"导员成绩对比");
-        adapter.addFrag(new DivisionClassFragment(avg,weekCode,mClassScoreList),"班级成绩对比");
-        adapter.addFrag(new DivisionSexFragment(avg,weekCode,mSexScoreList),"性别成绩对比");
-        adapter.addFrag(new DivisionCheckTypeFragment(avg,weekCode,mCheckTypeScoreList),"检查类型成绩对比");
-        viewpager.setAdapter(adapter);
+        DivisionBasisFragment g = (DivisionBasisFragment) adapter.getItem(0);
+        g.setData(weekCode,mGradeScoreList,mSexScoreList,mCheckTypeScoreList,dateType);
+
+        DivisionTeacherFragment t = (DivisionTeacherFragment) adapter.getItem(1);
+        t.setData(avg,weekCode,mTeacherScoreList,dateType);
+
+        DivisionClassFragment c = (DivisionClassFragment) adapter.getItem(2);
+        c.setData(avg,weekCode,mClassScoreList,dateType,mGradeScoreList);
+    }
+
+    // 当获取到数据后，调取fragment方法更新数据
+    private void setUINoData() {
+        DivisionBasisFragment g = (DivisionBasisFragment) adapter.getItem(0);
+        g.clearData();
+
+        DivisionTeacherFragment t = (DivisionTeacherFragment) adapter.getItem(1);
+        t.clearData();
+
+        DivisionClassFragment c = (DivisionClassFragment) adapter.getItem(2);
+        c.clearData();
     }
 
     // 获取数据
     private void initData() {
         showDialog();
+        mTeacherScoreList.clear();
+        mClassScoreList.clear();
+        mGradeScoreList.clear();
+        mSexScoreList.clear();
+        mCheckTypeScoreList.clear();
         OkHttpUtils
                 .get()
                 .url(URL.DIVISION_CHECK_SCORE)
                 .addParams("divisionName",SpUtil.getString(Constant.ASSISTANT_NAME))
                 .addParams("weekCode",weekCode+"")
+                .addParams("dateType",dateType)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -167,8 +203,13 @@ public class DivisionActivity extends MainBaseActivity {
                                     break;
                             }
                         }
-                        // 请求数据成功
-                        mHandler.sendEmptyMessage(0);
+                        if (data.length() > 0) {
+                            // 请求数据成功
+                            mHandler.sendEmptyMessage(0);
+                        } else {
+                            // 无数据
+                            mHandler.sendEmptyMessage(3);
+                        }
 
                     } else {
                         // 请求数据失败
@@ -193,6 +234,13 @@ public class DivisionActivity extends MainBaseActivity {
         viewpager = (ScrollViewPager) findViewById(R.id.viewpager);
         // 设置viewpager是否禁止滑动
         viewpager.setNoScroll(true);
+        viewpager.setOffscreenPageLimit(4);
+        // 初始化viewpager
+        adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new DivisionBasisFragment(),"基础项目成绩对比");
+        adapter.addFrag(new DivisionTeacherFragment(),"导员成绩对比");
+        adapter.addFrag(new DivisionClassFragment(),"班级成绩对比");
+        viewpager.setAdapter(adapter);
 
         // 初始化tablayout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -217,13 +265,14 @@ public class DivisionActivity extends MainBaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_admin, menu);
+        getMenuInflater().inflate(R.menu.menu_division, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        // 注销
         if (id == R.id.action_exit) {
             SpUtil.remove(Constant.PASSWORD);
             SpUtil.remove(Constant.ASSISTANT_NAME);
@@ -232,6 +281,89 @@ public class DivisionActivity extends MainBaseActivity {
             finish();
             return true;
         }
+        // 选择周数
+        if (id == R.id.action_week) {
+            showWeekPickerView();
+            return true;
+        }
+        // 选择月份
+        if (id == R.id.action_month) {
+            showMonthPickerView();
+            return true;
+        }
+        // 切换图标展示形式
+        if (id == R.id.action_list) {
+            DivisionTeacherFragment t = (DivisionTeacherFragment) adapter.getItem(1);
+            t.changeView();
+
+            DivisionClassFragment c = (DivisionClassFragment) adapter.getItem(2);
+            c.changeView();
+            return true;
+        }
+        // 修改宿舍成绩
+        if (id == R.id.action_change) {
+            Intent intent = new Intent(this, ChangeScoreActivity.class);
+            intent.putExtra("weekCode",currentWeekCode);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    // 设置选择器数据
+    private void initPickerViewData() {
+        weekNum = new ArrayList<>();
+        for (int i=1; i<=17;i++) {
+            weekNum.add(i);
+        }
+
+        monthNum = new ArrayList<>();
+        for (int i=1; i<=12; i++) {
+            monthNum.add(i);
+        }
+    }
+
+    // 显示周数选择器
+    private void showWeekPickerView() {
+        //条件选择器
+        OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                weekCode = weekNum.get(options1);
+                dateType = "week";
+
+                // 重新获取分数
+                initData();
+            }
+        }).setTitleText("选择周数(本周第"+currentWeekCode+"周)")
+                .setTitleSize(14)
+                .build();
+
+        pvOptions.setSelectOptions(currentWeekCode-1);
+        pvOptions.setPicker(weekNum);
+        pvOptions.show();
+    }
+
+    // 显示月数选择器
+    private void showMonthPickerView() {
+        //条件选择器
+        OptionsPickerView pvOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                weekCode = monthNum.get(options1);
+                dateType = "month";
+
+                // 重新获取分数
+                initData();
+            }
+        }).setTitleText("选择月份(本月"+currentMonth+"月)")
+                .setTitleSize(14)
+                .build();
+
+        pvOptions.setSelectOptions(currentMonth-1);
+        pvOptions.setPicker(monthNum);
+        pvOptions.show();
     }
 }

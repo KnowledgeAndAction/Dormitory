@@ -88,7 +88,7 @@ public class CheckOutActivity extends MainBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_checkout);
 
         getActivityIntent();
 
@@ -220,7 +220,7 @@ public class CheckOutActivity extends MainBaseActivity {
         //mlist.clear();
         OkHttpUtils
                 .get()
-                .url(URL.Get_User_Build)
+                .url(URL.GET_USER_BUILD)
                 .addParams("user", SpUtil.getString(Constant.USERNAME))
                 //.addParams("date", Utils.GetTime())
                 .build()
@@ -335,31 +335,38 @@ public class CheckOutActivity extends MainBaseActivity {
             }
         });
 
+        // 设置条目点击事件
         adapter.setOnItemClickListener(new BuildRecylerAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position, List<Hostel> mlist) {
                 Hostel hostel = mlist.get(position);
+                int buildCode = hostel.getBuilding();
+                int buildNum = hostel.getHostel();
+                int checkType = hostel.getCheckType();
                 boolean ischeck = hostel.isCheck();
-                if (ischeck) {
-                    Toast.makeText(CheckOutActivity.this, "当前宿舍已有成绩,不可评分", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent();
-                    intent.setClass(CheckOutActivity.this, ScoreActivity.class);
-                    int buildCode = hostel.getBuilding();
-                    int buildNum = hostel.getHostel();
-                    int checkType = hostel.getCheckType();
-                    intent.putExtra("buildCode", buildCode);
-                    intent.putExtra("buildNum", buildNum);
-                    intent.putExtra("checkType", checkType);
-                    startActivity(intent);
-                }
+                int type = ischeck ? 1:0;
+
+                /**
+                 * ischeck
+                 * 0：未检查
+                 * 1：已检查
+                 * 2：修改分数
+                 */
+                Intent intent = new Intent(CheckOutActivity.this, ScoreActivity.class);
+                intent.putExtra("buildCode", buildCode);
+                intent.putExtra("buildNum", buildNum);
+                intent.putExtra("checkType", checkType);
+                intent.putExtra("ischeck",type);
+                intent.putExtra("weekCode",weekCode);
+
+                startActivity(intent);
             }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_checkout, menu);
         return true;
     }
 

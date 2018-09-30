@@ -1,10 +1,12 @@
 package cn.hicc.suguan.dormitory.model;
 
+import java.io.Serializable;
+
 /**
  * Created by 陈帅 on 2018/5/31/031.
  */
 
-public class Score {
+public class Score implements Serializable{
     private String typeName;
     private double score;
 

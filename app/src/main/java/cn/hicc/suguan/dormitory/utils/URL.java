@@ -12,11 +12,11 @@ public class URL {
     // 登录
     public static final String LOGIN_URL = HOST + "DormitoryAPI/User/Login";
     // 获取宿舍信息
-    public static final String Get_User_Build = HOST + "DormitoryAPI/Query/Assistant/DormNum";
+    public static final String GET_USER_BUILD = HOST + "DormitoryAPI/Query/Assistant/DormNum";
     // 上传分数
     public static final String UP_SCORE = HOST + "DormitoryAPI/Insert/WeekScore";
     // 获取宿舍成员
-    public static final String Get_User_Name = HOST + "DormitoryAPI/Query/Student/Info";
+    public static final String GET_USER_NAME = HOST + "DormitoryAPI/Query/Student/Info";
     // 上传照片
     public static final String UP_IMAGE = "http://suguan.hicc.cn/UploadHandleServlet";
     // 检测更新
@@ -29,4 +29,12 @@ public class URL {
     public static final String DIVISION_CHECK_SCORE = HOST + "DormitoryAPI/Query/WeekScore/Division";
     // 领导查询
     public static final String LEADER_CHECK_SCORE = HOST + "DormitoryAPI/Query/WeekScore/Dean";
+    // 获取评分详情
+    public static final String GET_DETAILS_SCORE = HOST + "DormitoryAPI/Query/WeekScore/Dormitory";
+    // 修改分数
+    public static final String CHANGE_SCORE = HOST + "DormitoryAPI/Update/WeekScore";
+    // 获取宿舍成员详细信息
+    public static final String GET_DOR_MEMBERS = HOST + "DormitoryAPI/Query/StudentInfo/DormStudentInfo";
+    // 本周查宿情况
+    public static final String DOR_CHECK_STATE = HOST + "DormitoryAPI/Query/CheckState";
 }

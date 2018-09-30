@@ -24,7 +24,10 @@ public class TeacherDorStringAxisValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float v, AxisBase axisBase) {
-        String[] split = mStrs.get((int) v).split(" ");
-        return split[1] + split[2];
+        if (mStrs.size() > 0) {
+            String[] split = mStrs.get((int) v).split(" ");
+            return split[1] + split[2];
+        }
+        return "";
     }
 }

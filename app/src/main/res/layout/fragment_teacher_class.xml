@@ -7,6 +7,14 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
+    <com.bin.david.form.core.SmartTable
+        android:id="@+id/table_all_check_score"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </LinearLayout>

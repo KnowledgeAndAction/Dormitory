@@ -1,6 +1,5 @@
 package cn.hicc.suguan.dormitory.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,17 +27,10 @@ public class LeaderDorFragment extends Fragment {
 
     private HorizontalBarChart mChart;
     private List<Score> mDorScoreList;
-    private int weekCode;
     private List<String> xAxisValues;
     private List<Float> yAxisValues;
 
     public LeaderDorFragment() {
-    }
-
-    @SuppressLint("ValidFragment")
-    public LeaderDorFragment(int weekCode, List<Score> mDorScoreList) {
-        this.mDorScoreList = mDorScoreList;
-        this.weekCode = weekCode;
     }
 
     @Nullable
@@ -48,8 +40,6 @@ public class LeaderDorFragment extends Fragment {
 
         initView(view);
 
-        initData();
-
         return view;
     }
 
@@ -57,7 +47,30 @@ public class LeaderDorFragment extends Fragment {
         mChart = (HorizontalBarChart) view.findViewById(R.id.chart1);
     }
 
-    private void initData() {
+    // 设置数据
+    public void setData(int weekCode, List<Score> mDorScoreList, String dataType) {
+        this.mDorScoreList = mDorScoreList;
+
+        String name = "";
+        switch (dataType) {
+            case "week":
+                name = "第" + weekCode + "周";
+                break;
+            case "month":
+                name = weekCode + "月";
+                break;
+        }
+
+        if (mChart != null) {
+            initData(name);
+        }
+    }
+
+    public void clearData() {
+        mChart.clear();
+    }
+
+    private void initData(String name) {
         xAxisValues = new ArrayList<>();
         yAxisValues = new ArrayList<>();
         for (Score score : mDorScoreList) {
@@ -66,6 +79,6 @@ public class LeaderDorFragment extends Fragment {
         }
 
         IAxisValueFormatter iAxisValueFormatter = new StringAxisValueFormatter(xAxisValues);
-        MPChartHelper.setBarChart(getContext(),mChart,xAxisValues,yAxisValues,"第" + weekCode + "周" ,iAxisValueFormatter);
+        MPChartHelper.setBarChart(getContext(),mChart,xAxisValues,yAxisValues,name ,iAxisValueFormatter,false);
     }
 }

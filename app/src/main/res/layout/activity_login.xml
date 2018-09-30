@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/colorPrimary"
                         android:hint="用户名"
-                        android:inputType="textAutoComplete"
+                        android:inputType="number"
                         android:maxLines="1"
                         android:textCursorDrawable="@drawable/edittext_cursor" />
                 </android.support.design.widget.TextInputLayout>
@@ -101,7 +101,7 @@
                         android:backgroundTint="@color/colorPrimary"
                         android:hint="密码"
                         android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
+                        android:inputType="numberPassword"
                         android:maxLines="1"
                         android:textCursorDrawable="@drawable/edittext_cursor" />
                 </android.support.design.widget.TextInputLayout>

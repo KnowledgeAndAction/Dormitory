@@ -14,5 +14,10 @@
     <color name="btn_upscore_normal">#d33f3f</color>
     <color name="btn_upscore_pressed">#DA5A4D</color>
 
+    <color name="table_divider_color">#aea9a8</color>
+    <color name="white">#ffffff</color>
+
+    <color name="windows_bg">#f6f6f6</color>
+
     <color name="bar">#6CB0DF</color>
 </resources>

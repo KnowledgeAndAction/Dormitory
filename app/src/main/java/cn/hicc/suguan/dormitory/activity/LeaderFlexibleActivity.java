@@ -126,10 +126,12 @@ public class LeaderFlexibleActivity extends AppCompatActivity implements View.On
             if (jsonObject.getBoolean("flag")) {
                 // 选择项具体内容
                 JSONObject condition = jsonObject.getJSONObject("condition");
+                // 先将原始json数据换个格式，选项之间以 - 分割
                 String condition1 = condition.getString("condition1").replace("|","-");
                 String condition2 = condition.getString("condition2").replace("|","-");
                 String condition3 = condition.getString("condition3").replace("|","-");
 
+                // 每个选择加个 全部 然后在根据 - 分割成数组
                 mDetailedCondition1 = ("全部-"+condition1).split("-");
                 bt_condition1_list.setText("筛选条件1");
                 if (!condition2.equals("null")) {
@@ -308,9 +310,9 @@ public class LeaderFlexibleActivity extends AppCompatActivity implements View.On
         bt_send = (Button) findViewById(R.id.bt_send);
 
         ll_search = (LinearLayout) findViewById(R.id.ll_search);
-        bt_condition1_list = (Button) findViewById(R.id.bt_condition1_list);
-        bt_condition2_list = (Button) findViewById(R.id.bt_condition2_list);
-        bt_condition3_list = (Button) findViewById(R.id.bt_condition3_list);
+        bt_condition1_list = (Button) findViewById(R.id.bt_shuyuan);
+        bt_condition2_list = (Button) findViewById(R.id.bt_sushe);
+        bt_condition3_list = (Button) findViewById(R.id.bt_wuchengji);
         bt_select = (Button) findViewById(R.id.bt_select);
 
         bt_condition1.setOnClickListener(this);
@@ -338,13 +340,13 @@ public class LeaderFlexibleActivity extends AppCompatActivity implements View.On
                 // 弹出单选框
                 showConditionSigleDialog(3, checkedItem3);
                 break;
-            case R.id.bt_condition1_list:
+            case R.id.bt_shuyuan:
                 showDetailedSingleDialog(1,mDetailedCondition1);
                 break;
-            case R.id.bt_condition2_list:
+            case R.id.bt_sushe:
                 showDetailedSingleDialog(2,mDetailedCondition2);
                 break;
-            case R.id.bt_condition3_list:
+            case R.id.bt_wuchengji:
                 showDetailedSingleDialog(3,mDetailedCondition3);
                 break;
             // 进一步筛选
