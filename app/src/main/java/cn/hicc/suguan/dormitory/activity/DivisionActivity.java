@@ -287,10 +287,10 @@ public class DivisionActivity extends MainBaseActivity {
             return true;
         }
         // 选择月份
-        if (id == R.id.action_month) {
+        /*if (id == R.id.action_month) {
             showMonthPickerView();
             return true;
-        }
+        }*/
         // 切换图标展示形式
         if (id == R.id.action_list) {
             DivisionTeacherFragment t = (DivisionTeacherFragment) adapter.getItem(1);

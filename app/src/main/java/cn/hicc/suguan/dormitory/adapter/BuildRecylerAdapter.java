@@ -40,11 +40,7 @@ public class BuildRecylerAdapter extends RecyclerView.Adapter<BuildRecylerAdapte
         holder.tv_build_week.setText("第" + hostel.getWeekCode() + "周");
         if (hostel.isCheck()) {
             holder.iv_check_if.setImageResource(R.mipmap.iv_true);
-            if (hostel.getValue() == 0) {
-                holder.tv_build_score.setText("已评分");
-            } else {
-                holder.tv_build_score.setText(hostel.getValue() + "分");
-            }
+            holder.tv_build_score.setText(hostel.getValue() + "分");
         } else {
             holder.iv_check_if.setImageResource(R.mipmap.iv_false);
             holder.tv_build_score.setText("未评分");

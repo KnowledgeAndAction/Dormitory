@@ -146,7 +146,7 @@ public class CheckOutActivity extends MainBaseActivity {
 
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         // 配置swipeRefresh
-        swipeRefresh.setColorSchemeResources(R.color.colorPrimary , R.color.colorAccent, R.color.colorPrimaryDark);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark);
         // 设置刷新事件
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -162,10 +162,10 @@ public class CheckOutActivity extends MainBaseActivity {
     // 选择检查类型
     private void showChooseDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setSingleChoiceItems(new String[]{"普查","抽查"}, mCheckType-1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(new String[]{"普查", "抽查"}, mCheckType - 1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mCheckType = which+1;
+                mCheckType = which + 1;
             }
         });
         builder.setTitle("选择查宿类型");
@@ -222,7 +222,6 @@ public class CheckOutActivity extends MainBaseActivity {
                 .get()
                 .url(URL.GET_USER_BUILD)
                 .addParams("user", SpUtil.getString(Constant.USERNAME))
-                //.addParams("date", Utils.GetTime())
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -247,24 +246,36 @@ public class CheckOutActivity extends MainBaseActivity {
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject obs = array.getJSONObject(i);
                                 JSONObject ob = obs.getJSONObject("data");
-                                int Building = Integer.valueOf(ob.getString("dormitoryBuildingCode"));
-                                String DormitoryState = ob.getString("dormitoryState");
+                                // 获取宿舍楼名字
+                                String BuildingName = ob.getString("dormitoryBuildingCode");
+                                // 获取宿舍楼编号
+                                int Building = TextUtils.getBuildCode(BuildingName);
+                                // 获取成绩
                                 int totalScore = ob.getInt("totalScore");
+                                // 获取宿舍号
                                 int Hostel = ob.getInt("dormitoryId");
-                                int checkType = ob.getInt("checkType");
+                                // 获取检查类型
+                                String checkTypeName = ob.getString("checkType");
+                                int checkType = TextUtils.getCheckTypeCode(checkTypeName);
+                                // 获取查宿编号
+                                int checkNid = ob.getInt("checkNid");
 
                                 if (checkType == mCheckType) {
                                     ContentValues cv = new ContentValues();
                                     cv.put("Building", TextUtils.GetBuildName(Building));
                                     cv.put("Hostel", Hostel);
-                                    cv.put("DormitoryState", DormitoryState);
-                                    db.insert(SQLITE.TABLE_HELPER_CHECK, null, cv);
-                                    if (DormitoryState.equals("0")) {
-                                        list.add(new Hostel(Building, Hostel, totalScore, false, i + 1, checkType, weekCode));
+                                    cv.put("CheckNid", checkNid);
+                                    // 未检查
+                                    if (totalScore == 0) {
+                                        cv.put("DormitoryState", 0);
+                                        list.add(new Hostel(Building, Hostel, totalScore, false, i + 1, checkType, SpUtil.getInt(Constant.SEMESTER_WEEK),checkNid));
+                                        // 已经检查
                                     } else {
+                                        cv.put("DormitoryState", 1);
                                         count++;
-                                        list.add(new Hostel(Building, Hostel, totalScore, true, i + 1, checkType, weekCode));
+                                        list.add(new Hostel(Building, Hostel, totalScore, true, i + 1, checkType, SpUtil.getInt(Constant.SEMESTER_WEEK),checkNid));
                                     }
+                                    db.insert(SQLITE.TABLE_HELPER_CHECK, null, cv);
                                 }
                             }
                             //adapter.notifyDataSetChanged();
@@ -283,10 +294,10 @@ public class CheckOutActivity extends MainBaseActivity {
 
     // 测试用的假数据
     private void showFalseData() {
-        for (int i=0; i<15; i++) {
+        for (int i = 0; i < 15; i++) {
             int Building = i;
-            String DormitoryState = ""+i%2;
-            int totalScore = i+80;
+            String DormitoryState = "" + i % 2;
+            int totalScore = i + 80;
             int Hostel = i;
             int checkType = i;
             ContentValues cv = new ContentValues();
@@ -295,10 +306,10 @@ public class CheckOutActivity extends MainBaseActivity {
             cv.put("DormitoryState", DormitoryState);
             db.insert(SQLITE.TABLE_HELPER_CHECK, null, cv);
             if (DormitoryState.equals("0")) {
-                mlist.add(new Hostel(Building, Hostel, totalScore, false, i + 1, checkType, weekCode));
+                mlist.add(new Hostel(Building, Hostel, totalScore, false, i + 1, checkType, weekCode,1));
             } else {
                 count++;
-                mlist.add(new Hostel(Building, Hostel, totalScore, true, i + 1, checkType, weekCode));
+                mlist.add(new Hostel(Building, Hostel, totalScore, true, i + 1, checkType, weekCode,1));
             }
         }
         adapter.notifyDataSetChanged();
@@ -344,7 +355,8 @@ public class CheckOutActivity extends MainBaseActivity {
                 int buildNum = hostel.getHostel();
                 int checkType = hostel.getCheckType();
                 boolean ischeck = hostel.isCheck();
-                int type = ischeck ? 1:0;
+                int checkNid = hostel.getCheckNid();
+                int type = ischeck ? 1 : 0;
 
                 /**
                  * ischeck
@@ -356,8 +368,9 @@ public class CheckOutActivity extends MainBaseActivity {
                 intent.putExtra("buildCode", buildCode);
                 intent.putExtra("buildNum", buildNum);
                 intent.putExtra("checkType", checkType);
-                intent.putExtra("ischeck",type);
-                intent.putExtra("weekCode",weekCode);
+                intent.putExtra("ischeck", type);
+                intent.putExtra("weekCode", weekCode);
+                intent.putExtra("checkNid", checkNid);
 
                 startActivity(intent);
             }
@@ -412,8 +425,8 @@ public class CheckOutActivity extends MainBaseActivity {
         showUpImageDialog();
 
         OkHttpClient client = new OkHttpClient();
-        FormBody paramsBody=new FormBody.Builder()
-                .add("username",SpUtil.getString(Constant.USERNAME))
+        FormBody paramsBody = new FormBody.Builder()
+                .add("username", SpUtil.getString(Constant.USERNAME))
                 .build();
         builder.addPart(paramsBody);
         Request request = new Request.Builder()

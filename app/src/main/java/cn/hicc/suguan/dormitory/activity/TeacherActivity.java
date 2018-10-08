@@ -125,7 +125,7 @@ public class TeacherActivity extends MainBaseActivity {
         OkHttpUtils
                 .get()
                 .url(URL.TEACHER_CHECK_SCORE)
-                .addParams("instructorName",SpUtil.getString(Constant.ASSISTANT_NAME))
+                .addParams("instructorName",SpUtil.getString(Constant.USERNAME))
                 .addParams("weekCode",weekCode+"")
                 .addParams("dateType",dateType)
                 .build()
@@ -251,10 +251,10 @@ public class TeacherActivity extends MainBaseActivity {
             showWeekPickerView();
             return true;
         }
-        if (id == R.id.action_month) {
+        /*if (id == R.id.action_month) {
             showMonthPickerView();
             return true;
-        }
+        }*/
         // 列表展示
         if (id == R.id.action_list) {
             TeacherClassFragment c = (TeacherClassFragment) adapter.getItem(0);

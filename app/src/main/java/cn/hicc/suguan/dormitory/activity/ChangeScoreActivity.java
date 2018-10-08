@@ -118,8 +118,8 @@ public class ChangeScoreActivity extends AppCompatActivity implements View.OnCli
                 .url(URL.GET_DETAILS_SCORE)
                 .addParams("dorBui",dorBui)
                 .addParams("dorNo",dorNo)
-                .addParams("checkType",checkType)
                 .addParams("weekCode",weekCode+"")
+                .addParams("checkType",checkType)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -136,7 +136,16 @@ public class ChangeScoreActivity extends AppCompatActivity implements View.OnCli
                             JSONObject jsonObject = new JSONObject(response);
                             closeDialog();
                             if (jsonObject.getBoolean("flag")) {
-                                gotoChangeScore();
+                                JSONObject data = jsonObject.getJSONObject("data");
+                                String scoreString = data.getString("scoreString");
+                                String[] split = scoreString.split(" ");
+                                if (!split[0].equals("null")) {
+                                    // 获取查宿编号
+                                    int checkId = data.getInt("id");
+                                    gotoChangeScore(checkId);
+                                } else {
+                                    ToastUtil.showShort("本周暂无成绩，或没有该宿舍，请检查宿舍信息是否输入正确");
+                                }
                             } else {
                                 ToastUtil.showShort("本周暂无成绩，或没有该宿舍，请检查宿舍信息是否输入正确");
                             }
@@ -160,7 +169,7 @@ public class ChangeScoreActivity extends AppCompatActivity implements View.OnCli
     }
 
     // 跳转到修改界面
-    private void gotoChangeScore() {
+    private void gotoChangeScore(int checkNid) {
         String buildNum = et_dor_num.getText().toString().trim();
         String account = et_account.getText().toString().trim();
         if (!buildNum.equals("") && !account.equals("") && buildCode!=0 && weekCode!=0) {
@@ -171,6 +180,7 @@ public class ChangeScoreActivity extends AppCompatActivity implements View.OnCli
             intent.putExtra("ischeck",2);
             intent.putExtra("weekCode",weekCode);
             intent.putExtra("account",account);
+            intent.putExtra("checkNid",checkNid);
             startActivity(intent);
         } else {
             ToastUtil.showShort("请将信息填写完整");

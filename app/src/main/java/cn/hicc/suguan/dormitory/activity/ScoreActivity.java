@@ -45,9 +45,7 @@ import cn.hicc.suguan.dormitory.R;
 import cn.hicc.suguan.dormitory.adapter.HostelPersonAdapter;
 import cn.hicc.suguan.dormitory.model.HostelPerson;
 import cn.hicc.suguan.dormitory.model.SQLITE;
-import cn.hicc.suguan.dormitory.utils.Constant;
 import cn.hicc.suguan.dormitory.utils.Logs;
-import cn.hicc.suguan.dormitory.utils.SpUtil;
 import cn.hicc.suguan.dormitory.utils.TextUtils;
 import cn.hicc.suguan.dormitory.utils.ToastUtil;
 import cn.hicc.suguan.dormitory.utils.URL;
@@ -156,6 +154,7 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
     private int checkType;  // 检查类型
     private int ischeck;    //是否已经评分
     private int weekCode;   // 当前周
+    private int checkNid;   // 查宿编号
     private String account = ""; // 查宿人账号
 
     // 每隔300毫秒获取一次分数，并更新toolbar上的分数
@@ -289,7 +288,11 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
                                 JSONObject data = jsonObject.getJSONObject("data");
                                 String scoreString = data.getString("scoreString").trim();
                                 String[] scoreDetails = scoreString.split(" ");
-                                setDetailsScore(scoreDetails);
+                                if (!scoreDetails[0].equals("null")) {
+                                    setDetailsScore(scoreDetails);
+                                } else {
+                                    ToastUtil.showShort("获取评分详情失败");
+                                }
                             } else {
                                 ToastUtil.showShort("获取评分详情失败");
                             }
@@ -390,6 +393,7 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         checkType = intent.getIntExtra("checkType", 0);
         ischeck = intent.getIntExtra("ischeck", 0);
         weekCode = intent.getIntExtra("weekCode", 0);
+        checkNid = intent.getIntExtra("checkNid", 0);
         if (ischeck == 2) {
             account = intent.getStringExtra("account");
         }
@@ -409,7 +413,7 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         OkHttpUtils
                 .post()
                 .url(URL.GET_USER_NAME)
-                .addParams("DorBuiCode", build_code + "")   // 宿舍楼
+                .addParams("DorBuiCode", TextUtils.GetBuildName(build_code))   // 宿舍楼
                 .addParams("DorBedNum", build_num + "")     // 宿舍号
                 .build()
                 .execute(new StringCallback() {
@@ -486,13 +490,16 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         OkHttpUtils
                 .get()
                 .url(URL.CHANGE_SCORE)
-                .addParams("dorBui", build_code + "")
-                .addParams("dorNo", build_num + "")
-                .addParams("checkType", TextUtils.getCheckTypeName(checkType))
-                .addParams("weekCode",weekCode+"")
-                .addParams("assistant", account)
-                .addParams("totalScore", score + "")
-                .addParams("scoreString", scorestr)
+                .addParams("scoreele", scorestr)
+                .addParams("score", score + "")
+                .addParams("Nid", checkNid + "")
+                //.addParams("dorBui", build_code + "")
+                //.addParams("dorNo", build_num + "")
+                //.addParams("checkType", TextUtils.getCheckTypeName(checkType))
+                //.addParams("weekCode",weekCode+"")
+                //.addParams("assistant", account)
+                //.addParams("totalScore", score + "")
+                //.addParams("scoreString", scorestr)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -531,11 +538,12 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
                 .get()
                 .url(URL.UP_SCORE)
                 .addParams("scoreele", scorestr)
-                .addParams("user", SpUtil.getString(Constant.USERNAME))
                 .addParams("score", score + "")
-                .addParams("checkType", checkType + "")
-                .addParams("dorbui", build_code + "")
-                .addParams("dormitoryno", build_num + "")
+                .addParams("Nid", checkNid + "")
+                //.addParams("user", SpUtil.getString(Constant.USERNAME))
+                //.addParams("checkType", checkType + "")
+                //.addParams("dorbui", build_code + "")
+                //.addParams("dormitoryno", build_num + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -600,11 +608,16 @@ public class ScoreActivity extends AppCompatActivity implements CompoundButton.O
         // 查询下一个宿舍号
         Cursor c = db.query(SQLITE.TABLE_HELPER_CHECK, null, "Hostel>?",
                 new String[]{build_num + ""}, null, null, null);// 查询并获得游标
-        c.moveToNext();
-        // 获取宿舍号  按查询的列的顺序 宿舍号下标为2
-        build_num = c.getInt(2);
-        toolbar.setTitle(TextUtils.GetBuildName(build_code) + build_num);
-        sv_score.scrollTo(0, 0);    // 滑到顶部
+        if (c.moveToNext()){
+            // 获取宿舍号  按查询的列的顺序 宿舍号下标为2
+            build_num = c.getInt(2);
+            checkNid = c.getInt(4);
+            toolbar.setTitle(TextUtils.GetBuildName(build_code) + build_num);
+            sv_score.scrollTo(0, 0);    // 滑到顶部
+        } else {
+            ToastUtil.showShort("该宿舍楼已经检查完");
+        }
+
     }
 
     // 获取总分数

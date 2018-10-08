@@ -62,7 +62,7 @@ public class TextUtils {
         return string;
     }
 
-    public static int GetBuildCode(String BuildName) {
+    public static int getBuildCode(String BuildName) {
         int i = 0;
         if (BuildName.equals("馨源楼")) {
             i = 10;
@@ -115,6 +115,19 @@ public class TextUtils {
                 break;
             case 2:
                 type = "抽查";
+                break;
+        }
+        return type;
+    }
+
+    public static int getCheckTypeCode(String checkType) {
+        int type = 0;
+        switch (checkType) {
+            case "普查":
+                type = 1;
+                break;
+            case "抽查":
+                type = 2;
                 break;
         }
         return type;

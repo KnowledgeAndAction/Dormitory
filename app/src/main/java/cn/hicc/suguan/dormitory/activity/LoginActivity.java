@@ -200,9 +200,6 @@ public class LoginActivity extends MainBaseActivity {
                 .addParams("userPass", password)
                 .build()
                 .execute(new StringCallback() {
-
-                    private int level;
-
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ToastUtil.showShort("网络异常，请稍后重试");
@@ -214,6 +211,7 @@ public class LoginActivity extends MainBaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         try {
+                            Logs.d(response);
                             JSONObject jsonObject = new JSONObject(response);
                             boolean flag = jsonObject.getBoolean("flag");
                             if (flag) {
@@ -227,10 +225,17 @@ public class LoginActivity extends MainBaseActivity {
                                 SpUtil.putString(Constant.ASSISTANT_NAME, name);
 
                                 // 获取用户等级
-                                level = data.getInt("level");
-                                // 获取当前周数  接口暂时修改
-                                int weekCode = data.getInt("weekCode");
-                                //int weekCode = 11;
+                                int level = data.getInt("level");
+                                // 获取当前周编号
+                                int weekCode = data.getInt("dateNid");
+                                // 获取本学期周数
+                                int semesterWeek = data.getInt("SemesterWeek");
+                                SpUtil.putInt(Constant.SEMESTER_WEEK,semesterWeek);
+
+                                // 获取当前月份 2018-09
+                                String month = data.getString("Month");
+                                // 获取本学期名称 2018-2019秋学期
+                                String semester = data.getString("Semester");
 
                                 // 进入主界面
                                 enterHome(level,weekCode);
@@ -241,14 +246,8 @@ public class LoginActivity extends MainBaseActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Logs.e(e.toString());
-                            if (e.toString().equals("org.json.JSONException: No value for weekCode")) {
-                                // 进入主界面
-                                int weekCode = 16;
-                                enterHome(level,weekCode);
-                            } else {
-                                closeProgressDialog();
-                                ToastUtil.showShort("登录失败，请稍后重试");
-                            }
+                            closeProgressDialog();
+                            ToastUtil.showShort("登录失败，请稍后重试");
                         }
                     }
                 });
@@ -287,32 +286,30 @@ public class LoginActivity extends MainBaseActivity {
     private void enterHome(int level, int weekCode) {
         switch (level) {
             // 查宿人员
-            case 1:
+            case 7:
                 Intent intent = new Intent(LoginActivity.this, CheckOutActivity.class);
                 intent.putExtra("type", checkType);
                 intent.putExtra("weekCode", weekCode);
                 startActivity(intent);
                 break;
             // 导员
-            case 3:
+            case 6:
                 Intent intent3 = new Intent(LoginActivity.this, TeacherActivity.class);
                 intent3.putExtra("weekCode", weekCode);
                 startActivity(intent3);
                 break;
             // 学部
-            case 2:
+            case 4:
                 Intent intent2 = new Intent(LoginActivity.this, DivisionActivity.class);
                 intent2.putExtra("weekCode", weekCode);
                 startActivity(intent2);
                 break;
             // 学院领导
-            case 5:
-            case 6:
+            case 2:
                 Intent intent5 = new Intent(LoginActivity.this, LeaderActivity.class);
                 intent5.putExtra("weekCode", weekCode);
                 startActivity(intent5);
                 break;
-
         }
 
         ToastUtil.showShort("登录成功");

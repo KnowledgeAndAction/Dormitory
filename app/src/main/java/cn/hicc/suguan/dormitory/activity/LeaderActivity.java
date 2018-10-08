@@ -285,10 +285,10 @@ public class LeaderActivity extends MainBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         // 灵活查询
-        if (id == R.id.action_flexible) {
+        /*if (id == R.id.action_flexible) {
             startActivity(new Intent(this, LeaderFlexibleActivity.class));
             return true;
-        }
+        }*/
         if (id == R.id.action_exit) {
             SpUtil.remove(Constant.PASSWORD);
             SpUtil.remove(Constant.ASSISTANT_NAME);
@@ -303,10 +303,10 @@ public class LeaderActivity extends MainBaseActivity {
             return true;
         }
         // 选择月份
-        if (id == R.id.action_month) {
+        /*if (id == R.id.action_month) {
             showMonthPickerView();
             return true;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 

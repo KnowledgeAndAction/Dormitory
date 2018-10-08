@@ -8,8 +8,9 @@ public class Hostel {
     private int Code;//编号
     private int checkType;//查询类型（1普查，2抽查）
     private int weekCode;//第几周
+    private int checkNid;//查宿编号
 
-    public Hostel(int building, int hostel, int value, boolean isCheck, int code, int checkType, int weekCode) {
+    public Hostel(int building, int hostel, int value, boolean isCheck, int code, int checkType, int weekCode, int checkNid) {
         Building = building;
         Hostel = hostel;
         Value = value;
@@ -17,6 +18,15 @@ public class Hostel {
         Code = code;
         this.checkType = checkType;
         this.weekCode = weekCode;
+        this.checkNid = checkNid;
+    }
+
+    public int getCheckNid() {
+        return checkNid;
+    }
+
+    public void setCheckNid(int checkNid) {
+        this.checkNid = checkNid;
     }
 
     public int getWeekCode() {

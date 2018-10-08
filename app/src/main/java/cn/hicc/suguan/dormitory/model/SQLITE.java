@@ -7,6 +7,7 @@ public class SQLITE {
             + "Hid integer primary key autoincrement,"
             + "Building TEXT not null,"
             + "Hostel TEXT not null,"
-            + "DormitoryState integer not null"
+            + "DormitoryState integer not null,"
+            + "CheckNid integer not null"
             + ")";
 }

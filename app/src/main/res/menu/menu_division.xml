@@ -3,17 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.lew.dormitory.MainActivity">
 
+    <!--暂时去掉 以后加上需要先获取校历-->
     <item
         android:id="@+id/action_week"
         android:orderInCategory="100"
         android:title="选择周数"
+        android:visible="false"
         app:showAsAction="never" />
 
-    <item
+    <!--<item
         android:id="@+id/action_month"
         android:orderInCategory="100"
         android:title="选择月份"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/action_list"
