@@ -20,7 +20,9 @@ import java.util.List;
 import cn.hicc.suguan.dormitory.R;
 import cn.hicc.suguan.dormitory.adapter.TableListAdapter;
 import cn.hicc.suguan.dormitory.model.Score;
+import cn.hicc.suguan.dormitory.utils.Constant;
 import cn.hicc.suguan.dormitory.utils.MPChartHelper;
+import cn.hicc.suguan.dormitory.utils.SpUtil;
 import cn.hicc.suguan.dormitory.utils.ToastUtil;
 import cn.hicc.suguan.dormitory.view.DivisionClassStringAxisValueFormatter;
 
@@ -95,7 +97,7 @@ public class DivisionClassFragment extends Fragment {
         String name = "";
         switch (dataType) {
             case "week":
-                name = "第" + weekCode + "周";
+                name = "第" + SpUtil.getInt(Constant.SEMESTER_WEEK) + "周";
                 break;
             case "month":
                 name = weekCode + "月";

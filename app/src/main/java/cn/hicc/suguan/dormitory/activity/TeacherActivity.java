@@ -71,7 +71,7 @@ public class TeacherActivity extends MainBaseActivity {
                 case 2:
                     ToastUtil.showShort("解析数据失败");
                     closeDialog();
-                // 无数据
+                    // 无数据
                 case 3:
                     setUINoData();
                     closeDialog();
@@ -104,9 +104,9 @@ public class TeacherActivity extends MainBaseActivity {
     // 当获取到数据后，调取fragment方法更新数据
     private void setUI() {
         TeacherClassFragment c = (TeacherClassFragment) adapter.getItem(0);
-        c.setData(weekCode,mClassScoreList,dateType);
+        c.setData(weekCode, mClassScoreList, dateType);
         TeacherDormFragment t = (TeacherDormFragment) adapter.getItem(1);
-        t.setData(weekCode,mDorScoreList,dateType);
+        t.setData(weekCode, mDorScoreList, dateType);
     }
 
     // 当获取到数据后，调取fragment方法更新数据
@@ -125,15 +125,15 @@ public class TeacherActivity extends MainBaseActivity {
         OkHttpUtils
                 .get()
                 .url(URL.TEACHER_CHECK_SCORE)
-                .addParams("instructorName",SpUtil.getString(Constant.USERNAME))
-                .addParams("weekCode",weekCode+"")
-                .addParams("dateType",dateType)
+                .addParams("instructorName", SpUtil.getString(Constant.USERNAME))
+                .addParams("weekCode", weekCode + "")
+                .addParams("dateType", dateType)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ToastUtil.showShort("获取数据失败，请稍后重试");
-                        Logs.e("获取数据失败："+e.toString());
+                        Logs.e("获取数据失败：" + e.toString());
                         closeDialog();
                     }
 
@@ -148,7 +148,7 @@ public class TeacherActivity extends MainBaseActivity {
 
     // 解析json
     private void resolveJson(final String response) {
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -156,10 +156,15 @@ public class TeacherActivity extends MainBaseActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getBoolean("flag")) {
                         JSONArray data = jsonObject.getJSONArray("data");
-                        for (int i=0; i<data.length(); i++) {
+                        for (int i = 0; i < data.length(); i++) {
                             JSONObject info = data.getJSONObject(i);
                             String classCodes = info.getString("classCodes");
-                            Score score = new Score(info.getString("className"),info.getDouble("avgSocre"));
+                            String avg = info.getString("avgSocre");
+                            double avgScore = 0;
+                            if (!avg.equals("")) {
+                                avgScore = Double.parseDouble(avg);
+                            }
+                            Score score = new Score(info.getString("className"), avgScore);
                             switch (classCodes) {
                                 // 宿舍成绩信息
                                 case "dormitory":
@@ -186,7 +191,7 @@ public class TeacherActivity extends MainBaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     mHandler.sendEmptyMessage(2);
-                    Logs.e("解析异常："+e.toString());
+                    Logs.e("解析异常：" + e.toString());
                 }
             }
         }.start();
@@ -203,8 +208,8 @@ public class TeacherActivity extends MainBaseActivity {
         viewpager.setNoScroll(true);
         // 设置适配器
         adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new TeacherClassFragment(),"班级成绩对比");
-        adapter.addFrag(new TeacherDormFragment(),"宿舍成绩对比");
+        adapter.addFrag(new TeacherClassFragment(), "班级成绩对比");
+        adapter.addFrag(new TeacherDormFragment(), "宿舍成绩对比");
         viewpager.setAdapter(adapter);
 
         // 初始化tablayout
@@ -269,12 +274,12 @@ public class TeacherActivity extends MainBaseActivity {
     // 设置选择器数据
     private void initPickerViewData() {
         weekNum = new ArrayList<>();
-        for (int i=1; i<=17;i++) {
+        for (int i = 1; i <= 17; i++) {
             weekNum.add(i);
         }
 
         monthNum = new ArrayList<>();
-        for (int i=1; i<=12; i++) {
+        for (int i = 1; i <= 12; i++) {
             monthNum.add(i);
         }
     }
@@ -292,11 +297,11 @@ public class TeacherActivity extends MainBaseActivity {
                 // 重新获取分数
                 initData();
             }
-        }).setTitleText("选择周数(本周第"+currentWeekCode+"周)")
+        }).setTitleText("选择周数(本周第" + currentWeekCode + "周)")
                 .setTitleSize(14)
                 .build();
 
-        pvOptions.setSelectOptions(currentWeekCode-1);
+        pvOptions.setSelectOptions(currentWeekCode - 1);
         pvOptions.setPicker(weekNum);
         pvOptions.show();
     }
@@ -314,11 +319,11 @@ public class TeacherActivity extends MainBaseActivity {
                 // 重新获取分数
                 initData();
             }
-        }).setTitleText("选择月份(本月"+currentMonth+"月)")
+        }).setTitleText("选择月份(本月" + currentMonth + "月)")
                 .setTitleSize(14)
                 .build();
 
-        pvOptions.setSelectOptions(currentMonth-1);
+        pvOptions.setSelectOptions(currentMonth - 1);
         pvOptions.setPicker(monthNum);
         pvOptions.show();
     }

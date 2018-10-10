@@ -185,7 +185,12 @@ public class LeaderActivity extends MainBaseActivity {
                         for (int i=0; i<data.length(); i++) {
                             JSONObject info = data.getJSONObject(i);
                             String classCodes = info.getString("classCodes");
-                            Score score = new Score(info.getString("className"),info.getDouble("avgSocre"));
+                            String avgs = info.getString("avgSocre");
+                            double avgScore = 0;
+                            if (!avgs.equals("")) {
+                                avgScore = Double.parseDouble(avgs);
+                            }
+                            Score score = new Score(info.getString("className"), avgScore);
                             switch (classCodes) {
                                 // 检查类型
                                 case "Description":

@@ -101,7 +101,7 @@
                         android:backgroundTint="@color/colorPrimary"
                         android:hint="密码"
                         android:imeOptions="actionUnspecified"
-                        android:inputType="numberPassword"
+                        android:inputType="textPassword"
                         android:maxLines="1"
                         android:textCursorDrawable="@drawable/edittext_cursor" />
                 </android.support.design.widget.TextInputLayout>

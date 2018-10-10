@@ -35,6 +35,6 @@ public class URL {
     public static final String CHANGE_SCORE = HOST + "newDormitoryAPI/Insert/WeekScore";
     // 获取宿舍成员详细信息
     public static final String GET_DOR_MEMBERS = HOST + "newDormitoryAPI/Query/StudentInfo/DormStudentInfo";
-    // TODO 本周查宿情况 可能需要修改地址
-    public static final String DOR_CHECK_STATE = HOST + "DormitoryAPI/Query/CheckState";
+    // 本周查宿情况
+    public static final String DOR_CHECK_STATE = HOST + "newDormitoryAPI/Query/CheckState";
 }
